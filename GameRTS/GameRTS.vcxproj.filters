@@ -1,0 +1,131 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Externals">
+      <UniqueIdentifier>{05cba2b1-52b3-405c-9866-b29fae8fd3fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\PathFinder">
+      <UniqueIdentifier>{3a4e5cb2-99f6-4c7b-ab27-e61f802402eb}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Externals\imgui.cpp">
+      <Filter>Source Files\Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Externals\imgui_demo.cpp">
+      <Filter>Source Files\Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Externals\imgui_draw.cpp">
+      <Filter>Source Files\Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Externals\imgui-SFML.cpp">
+      <Filter>Source Files\Externals</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RTSUnitType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RTSApplication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RTSConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RTSTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RTSTiledMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RTSWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\PathFinder.cpp">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\BFS.cpp">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Astar.cpp">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Best.cpp">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\DFS.cpp">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Dijkstra.cpp">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Include\RTSUnitType.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RTSApplication.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RTSConfig.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RTSTexture.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RTSTiledMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RTSWorld.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Externals\imconfig.h">
+      <Filter>Source Files\Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Externals\imgui.h">
+      <Filter>Source Files\Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Externals\imgui_internal.h">
+      <Filter>Source Files\Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Externals\imgui-SFML.h">
+      <Filter>Source Files\Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Externals\stb_rect_pack.h">
+      <Filter>Source Files\Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Externals\stb_textedit.h">
+      <Filter>Source Files\Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Externals\stb_truetype.h">
+      <Filter>Source Files\Externals</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\PathFinder.h">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\BFS.h">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Astar.h">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Best.h">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\DFS.h">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Dijkstra.h">
+      <Filter>Source Files\PathFinder</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
