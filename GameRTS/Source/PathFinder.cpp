@@ -8,7 +8,7 @@ PathFinder::PathFinder()
 
 }
 
-void PathFinder::update()
+void PathFinder::update(float deltaTime)
 {
 
 }

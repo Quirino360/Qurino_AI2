@@ -216,7 +216,7 @@ RTSApplication::updateFrame() {
   m_gameWorld.update(deltaTime);
 
   // PathFinder
-  pFinder->update();
+  pFinder->update(deltaTime);
 }
 
 void
@@ -245,7 +245,7 @@ RTSApplication::postInit() {
   m_gameWorld.updateResolutionData();
 
   // PathFinder
-  pFinder = new Best();
+  pFinder = new BFS();
   pFinder->Init(m_gameWorld.getTiledMap());
 
 }

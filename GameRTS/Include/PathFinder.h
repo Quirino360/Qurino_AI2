@@ -117,7 +117,7 @@ public:
   Init(RTSTiledMap* _tileMap) = 0;
 
   virtual void
-  update();
+  update(float deltaTime);
 
 public:
   inline virtual void 
