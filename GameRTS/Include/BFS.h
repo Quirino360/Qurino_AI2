@@ -16,33 +16,24 @@ public:
   virtual void
   update(float deltaTime);
 
+  virtual void
+  render();
+
   // main algorithm
   virtual void
-  run(const Vector2I& _startCoord, const Vector2I& _targetCoord);
-
-  void
-  runStepByStep(const Vector2I& _startCoord, const Vector2I& _targetCoord);
+  run();
 
   // search for new nodes and 
   virtual bool
   step();
 
-  void 
-  setNodes(const Vector2I& _startCoord = Vector2I(0,0), 
-    const Vector2I& _targetCoord = Vector2I(10, 10));
-
 private:
 
   Conections conections;
 
-  bool isTargetFounded = false;
+  float stepPerFrames = 1;
 
-  bool isStepByStep = true;
+  float elapsedFrames = 0;
 
-  bool isNodesSeted = false;
-
-  float timePerStep = 1;
-
-  float elapsedTimePerStep = 1;
 };
 

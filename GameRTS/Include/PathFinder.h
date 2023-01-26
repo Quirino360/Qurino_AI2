@@ -92,8 +92,6 @@ struct Conections
     nextNodes.push_back(newNode);
   }
 
-
-
   geEngineSDK::Vector<Vector2I> nextNodes;
  
   const Vector2I top =        Vector2I( 0,-1 );
@@ -119,23 +117,34 @@ public:
   virtual void
   update(float deltaTime);
 
+  virtual void
+  render() = 0;
+
 public:
-  inline virtual void 
-  setStartNode(const Vector2I& _startCoord) { startCoord = _startCoord; };
+  
+  virtual void
+  setNodes(const Vector2I& _startCoord = Vector2I(0, 0),
+    const Vector2I& _targetCoord = Vector2I(10, 10));
 
-  inline virtual void
-  setTargetNode(const Vector2I& _targetCoord) { targetCoord = _targetCoord; };
+  void 
+  showPath(Vector2I _target);
 
-  void showPath(Vector2I _target);
+  void 
+  startSearching() {
+    if (isFindingTarget == false)
+    {
+      isFindingTarget = true;
+    }
+  }
 
 protected:
   // main algorithm
   virtual void
-    run(const Vector2I& _startCoord, const Vector2I& _targetCoord) = 0;
+  run() = 0;
 
   // search for new nodes and 
   virtual bool
-    step() = 0;
+  step() = 0;
 
   bool isInOpenList(Vector2I _target);
 
@@ -145,6 +154,13 @@ protected:
 
 
 protected:
+  bool isNodesSeted = false;
+
+  bool isTargetFounded = false;
+
+  bool isFindingTarget = false;
+
+
   RTSTiledMap* tileMap;
 
   geEngineSDK::Vector<Node*> openNodes;
@@ -152,8 +168,8 @@ protected:
   geEngineSDK::Vector<Node*> closedNodes;
 
   Vector2I startCoord;
-  Vector2I targetCoord;
 
+  Vector2I targetCoord;
 };
 
 

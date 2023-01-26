@@ -10,7 +10,23 @@ PathFinder::PathFinder()
 
 void PathFinder::update(float deltaTime)
 {
+}
 
+void PathFinder::setNodes(const Vector2I& _startCoord, const Vector2I& _targetCoord)
+{
+  startCoord = _startCoord;
+  targetCoord = _targetCoord;
+
+  //nodes are valid coords
+  if (startCoord.x == NULL && startCoord.y == NULL &&
+    targetCoord.x == NULL && targetCoord.y == NULL)
+  {
+    return;
+  }
+
+  openNodes.push_back(new Node(startCoord, nullptr));
+
+  isNodesSeted = true;
 }
 
 void PathFinder::showPath(Vector2I _target)
@@ -28,7 +44,7 @@ void PathFinder::showPath(Vector2I _target)
 
   while (fatherNodeAux != nullptr)
   {
-    tileMap->setType(fatherNodeAux->coord.x, fatherNodeAux->coord.y, 3);
+    tileMap->setType(fatherNodeAux->coord.x, fatherNodeAux->coord.y, 1);
     fatherNodeAux = fatherNodeAux->fatherNode;
   }
 

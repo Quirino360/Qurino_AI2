@@ -179,6 +179,7 @@
     <ClCompile Include="Source\Externals\imgui_draw.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\PathFinder.cpp" />
+    <ClCompile Include="Source\PathFindingMap.cpp" />
     <ClCompile Include="Source\RTSApplication.cpp" />
     <ClCompile Include="Source\RTSConfig.cpp" />
     <ClCompile Include="Source\RTSTexture.cpp" />
@@ -200,6 +201,7 @@
     <ClInclude Include="Include\Externals\stb_textedit.h" />
     <ClInclude Include="Include\Externals\stb_truetype.h" />
     <ClInclude Include="Include\PathFinder.h" />
+    <ClInclude Include="Include\PathFindingMap.h" />
     <ClInclude Include="Include\RTSApplication.h" />
     <ClInclude Include="Include\RTSConfig.h" />
     <ClInclude Include="Include\RTSTexture.h" />

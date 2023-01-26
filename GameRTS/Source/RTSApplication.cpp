@@ -34,6 +34,9 @@ loadMapFromFile(RTSApplication* pApp);
 void
 mainMenu(RTSApplication* pApp);
 
+void
+PathFindingMenu(RTSApplication* pApp);
+
 RTSApplication::RTSApplication()
   : m_window(nullptr),
     m_fpsTimer(0.0f),
@@ -165,6 +168,8 @@ RTSApplication::updateFrame() {
   //Begin the menu 
   mainMenu(this);
 
+  PathFindingMenu(this);
+
   //Check for camera movement
   Vector2 axisMovement(FORCE_INIT::kForceInitToZero);
   Vector2I mousePosition;
@@ -212,6 +217,8 @@ RTSApplication::updateFrame() {
 
   m_gameWorld.getTiledMap()->moveCamera(axisMovement.x, axisMovement.y);
 
+  m_gameWorld.getTiledMap()->setColor(1,1, 252, 3, 3);
+
   //Update the world
   m_gameWorld.update(deltaTime);
 
@@ -223,7 +230,11 @@ void
 RTSApplication::renderFrame() {
   m_window->clear(sf::Color::Blue);
 
+  // Render World
   m_gameWorld.render();
+
+  //Render Path Finder
+  pFinder->render();
 
   ImGui::SFML::Render(*m_window);
 
@@ -245,8 +256,11 @@ RTSApplication::postInit() {
   m_gameWorld.updateResolutionData();
 
   // PathFinder
-  pFinder = new BFS();
-  pFinder->Init(m_gameWorld.getTiledMap());
+
+  m_bfs.Init(m_gameWorld.getTiledMap());
+  //m_dfs.Init(m_gameWorld.getTiledMap());
+  
+  pFinder = &m_bfs;
 
 }
 
@@ -293,8 +307,10 @@ loadMapFromFile(RTSApplication* pApp) {
 
 void
 mainMenu(RTSApplication* pApp) {
-  if (ImGui::BeginMainMenuBar()) {
-    if (ImGui::BeginMenu("Map")) {
+  if (ImGui::BeginMainMenuBar()) 
+  {
+    if (ImGui::BeginMenu("Map")) 
+    {
       if (ImGui::MenuItem("Load...", "CTRL+O")) {
         loadMapFromFile(pApp);
       }
@@ -330,4 +346,64 @@ mainMenu(RTSApplication* pApp) {
   }
   ImGui::End();
 
+}
+
+static int start[] = { 0 ,0 };
+static int goal[] = {10 ,10};
+static int pathType = 1;
+string pathTypeName = "BFS";
+void
+PathFindingMenu(RTSApplication* pApp)
+{
+  ImGui::Begin("PathFindingMenu");
+  {
+    
+    ImGui::Text("Selelct Path Type");
+    if (ImGui::SliderInt(pathTypeName.c_str(), &pathType, 1, 5))
+    {
+      if (1 == pathType)
+      {
+        pathTypeName = "BREADTH FIRST SEARCH";
+        pApp->setPathFinder(&pApp->m_bfs);
+      }
+      else if (2 == pathType)
+      {
+        pathTypeName = "DEPTH FIRST SEARCH";
+        pApp->setPathFinder(&pApp->m_bfs);
+      }
+      else if (3 == pathType)
+      {
+        pathTypeName = "BEST";
+        pApp->setPathFinder(&pApp->m_bfs);
+      }
+      else if (4 == pathType)
+      {
+        pathTypeName = "DIJKSTRA";
+        pApp->setPathFinder(&pApp->m_bfs);
+      }
+      else if (5 == pathType)
+      {
+        pathTypeName = "ASTAR";
+        pApp->setPathFinder(&pApp->m_bfs);
+      }
+    }
+    ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+    if (ImGui::Button("Start Search"))
+    {
+      pApp->getPathFinder()->startSearching();
+    }
+
+    if (ImGui::InputInt2("Start position", start))
+    {
+      pApp->getPathFinder()->setNodes({ start[0], start[1] }, 
+        { goal[0], goal[1] });
+    }
+    if (ImGui::InputInt2("Goal position", goal))
+    {
+      pApp->getPathFinder()->setNodes({ start[0], start[1] }, 
+        { goal[0], goal[1] });
+    }
+    
+  }
+  ImGui::End();
 }

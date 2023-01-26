@@ -164,6 +164,10 @@ class RTSTiledMap
                        int32 &scrX,
                        int32 &scrY);
 
+  /*/void
+  setColor(const uint8& x, const uint8& y,
+    uint8 red, uint8 green = 255, uint8 blue = 255, uint8 alpha = 255);/**/
+
  private:
   Vector2I m_mapSize;
   Vector<MapTile> m_mapGrid; // "The map"
@@ -181,3 +185,4 @@ class RTSTiledMap
 
   sf::RenderTarget* m_pTarget;
 };
+

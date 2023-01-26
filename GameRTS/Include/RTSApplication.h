@@ -3,7 +3,9 @@
 #include "RTSTexture.h"
 #include "RTSWorld.h"
 
-class PathFinder;
+#include "PathFinder.h";
+#include "BFS.h"
+#include "DFS.h"
 
 using namespace geEngineSDK;
 
@@ -14,63 +16,85 @@ namespace sf{
 
 class RTSApplication
 {
- public:
-  RTSApplication();
-  virtual ~RTSApplication();
+public:
+ RTSApplication();
+ virtual ~RTSApplication();
 
-  int32
-  run();
+ int32
+ run();
 
-  sf::RenderWindow*
-  getRenderWindow() {
-    return m_window;
-  }
+ sf::RenderWindow*
+ getRenderWindow() {
+   return m_window;
+ }
 
-  RTSWorld*
-  getWorld() {
-    return &m_gameWorld;
-  }
+ RTSWorld*
+ getWorld() {
+   return &m_gameWorld;
+ }
 
-  float getFPS() const {
-    return m_framesPerSecond;
-  }
+ float getFPS() const {
+   return m_framesPerSecond;
+ }
 
- protected:
+ PathFinder*
+   getPathFinder() {
+   return pFinder;
+ }
 
- private:
-   void
-   initSystems();
+ void
+   setPathFinder(PathFinder* _pFinderType) {
+   pFinder = _pFinderType;
+ }
 
-   void
-   initGUI();
+protected:
 
-   void
-   destroySystems();
+private:
+  void
+  initSystems();
 
-   void
-   gameLoop();
+  void
+  initGUI();
 
-   void
-   postInit();
+  void
+  destroySystems();
 
-   void
-   postDestroy();
+  void
+  gameLoop();
 
-   void
-   updateFrame();
-   
-   void
-   renderFrame();
+  void
+  postInit();
 
- private:
-   sf::RenderWindow* m_window;
-   sf::Font* m_arialFont;
-   RTSWorld m_gameWorld;
-   PathFinder* pFinder;
+  void
+  postDestroy();
 
-   float m_fpsTimer;
-   float m_fpsCounter;
-   float m_framesPerSecond;
+  void
+  updateFrame();
+  
+  void
+  renderFrame();
+
+public:
+  BFS m_bfs;
+
+
+
+private:
+  sf::RenderWindow* m_window;
+  sf::Font* m_arialFont;
+  RTSWorld m_gameWorld;
+  PathFinder* pFinder;
+  //DFS m_dfs;
+
+
+
+
+  float m_fpsTimer;
+  float m_fpsCounter;
+  float m_framesPerSecond;
+
+
+
 };
 
 // App -> World -> Map -> Tiles

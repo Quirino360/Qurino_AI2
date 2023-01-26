@@ -203,6 +203,7 @@ RTSTiledMap::render() {
       clipRect.x = (iterX << GameOptions::BITSHFT_TILESIZE.x) % refTexture.getWidth();
       clipRect.y = (iterY << GameOptions::BITSHFT_TILESIZE.y) % refTexture.getHeight();
 
+      //refTexture.setColor(252, 3, 3);
       refTexture.setPosition(tmpX, tmpY);
       refTexture.setSrcRect(clipRect.x, clipRect.y, TILESIZE_X, TILESIZE_Y);
       refTexture.draw();
