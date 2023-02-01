@@ -21,40 +21,42 @@ RTSTiledMap::~RTSTiledMap() {
 }
 
 bool
-RTSTiledMap::init(sf::RenderTarget* pTarget, const Vector2I& mapSize) {
+RTSTiledMap::init(sf::RenderTarget* pTarget, const Vector2I& mapSize,
+  String  _textureRoute, Vector<String> _texturesNames) 
+{
+
   if (m_mapGrid.size()) {
     destroy();
   }
-
+  
+  textureNames = _texturesNames;
+  textureRoute = _textureRoute;
   m_pTarget = pTarget;
+
+  //if is empty set default textures
+  if (textureNames.size() <= 0)
+  {
+    textureNames = { "Water", "Grass", "Marsh", "Obstacle" };
+    //textureNames = {"Untiled", "Start", "Target", "OpenList", "ClosedList" };
+  }
+
 
   m_mapGrid.resize(mapSize.x * mapSize.y);
   m_mapSize = mapSize;
   setCameraStartPosition(0, 0);
 
-  m_mapTextures.resize(TERRAIN_TYPE::kNumObjects);
-
+  m_mapTextures.resize(textureNames.size());
   String textureName;
-  for (uint32 i = 0; i < TERRAIN_TYPE::kNumObjects; ++i) {
+  for (uint32 i = 0; i < textureNames.size(); ++i) {
 #ifdef MAP_IS_ISOMETRIC
-    textureName = "Textures/Terrain/iso_terrain_" + toString(i) + ".png";
+    textureName = textureRoute + "/iso_terrain_" + textureNames[i] + ".png";
 #else
-    textureName = "Textures/Terrain/terrain_" + toString(i) + ".png";
+    textureName = textureRoute + "/terrain_" + textureNames[i] + ".png";
 #endif
     m_mapTextures[i].loadFromFile(m_pTarget, textureName);
   }
 
   preCalc();
-
-  // Set the tile type 
-  for (uint16 i = 0; i < getMapSize().x; i++)
-  {
-      for (uint16 j = 0; j < getMapSize().y; j++)
-      {
-          setType(i, j, 1);
-      }
-  }/**/
-
   return true;
 }
 
@@ -85,6 +87,20 @@ RTSTiledMap::getType(const int32 x, const int32 y) const {
   GE_ASSERT((x >= 0) && (x < m_mapSize.x) && (y >= 0) && (y < m_mapSize.y));
   return m_mapGrid[(y*m_mapSize.x) + x].getType();
 }
+
+void
+RTSTiledMap::setMapType(const uint8 type)
+{
+  // Set the tile type 
+  for (uint16 i = 0; i < getMapSize().x; i++)
+  {
+    for (uint16 j = 0; j < getMapSize().y; j++)
+    {
+      setType(i, j, type);
+    }
+  }/**/
+}
+
 
 void
 RTSTiledMap::setType(const int32 x, const int32 y, const uint8 idtype) {
@@ -295,6 +311,7 @@ bool
 RTSTiledMap::loadFromImageFile(sf::RenderTarget* pTarget, String fileName) {
   sf::Image image;
 
+  /*
   if (!image.loadFromFile(fileName.c_str())) {
     LOGWRN("File not found: " + fileName);
     return false;
@@ -331,10 +348,11 @@ RTSTiledMap::loadFromImageFile(sf::RenderTarget* pTarget, String fileName) {
       setType(tmpX, tmpY, tipoTerreno);
     }
   }
-
-  
-
   return true;
+
+  /**/
+  
+  return false; //delete this if fixed
 }
 
 bool

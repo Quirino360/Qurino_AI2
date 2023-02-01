@@ -31,6 +31,7 @@ class GameOptions : public Module<GameOptions>
 
   //Map Values
   static bool s_MapShowGrid;
+  static bool s_renderPathTiles;
   static Color s_MapGridColor;
 
   //Global Constants

@@ -34,6 +34,11 @@ class RTSWorld
     return m_pTiledMap;
   }
 
+  RTSTiledMap*
+    getPathTiledMap() {
+    return m_pTiledPathMap;
+  }
+
   void
   updateResolutionData();
 
@@ -41,7 +46,9 @@ class RTSWorld
   setCurrentWalker(const int8 index);
 
  private:
-  RTSTiledMap* m_pTiledMap; // The map
+   RTSTiledMap* m_pTiledMap; // The map
+   RTSTiledMap* m_pTiledPathMap; // The map
+
   //List<RTSUnitType*> m_lstUnitTypes;
   //List<RTSUnit*> m_lstUnits;
   
@@ -52,4 +59,5 @@ class RTSWorld
   int8 m_activeWalkerIndex;
 
   sf::RenderTarget* m_pTarget;
+
 };

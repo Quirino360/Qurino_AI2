@@ -1,10 +1,11 @@
 #include "Best.h"
+#include "RTSWorld.h"
 #include "RTSTiledMap.h"
 
 
-void Best::Init(RTSTiledMap* _tileMap)
+void Best::Init(RTSWorld* _world)
 {
-  tileMap = _tileMap;
+  world = _world;
 }
 
 void Best::update()
@@ -41,8 +42,8 @@ void Best::run(const Vector2I& _startCoord, const Vector2I& _targetCoord)
       coordAux = closedNodes[closedNodes.size() - 1]->coord + conections.nextNodes[i];
 
       if (coordAux.x >= 0 && coordAux.y >= 0 &&
-        coordAux.x < tileMap->getMapSize().x && coordAux.y < tileMap->getMapSize().y
-        && tileMap->getType(coordAux.x, coordAux.y) == 1)
+        coordAux.x < world->getTiledMap()->getMapSize().x && coordAux.y < world->getTiledMap()->getMapSize().y
+        && world->getTiledMap()->getType(coordAux.x, coordAux.y) == 1)
       {
         // agregamos el nodo a la lista abaierta si es que no esta
         if (false == isInOpenList(coordAux) && false == isInClosedList(coordAux))
@@ -83,7 +84,7 @@ bool Best::step()
   else
   {
     closedNodes.push_back(openNodes[0]); // agregamos a los nodos cerrados 
-    tileMap->setType(openNodes[0]->coord.x, openNodes[0]->coord.y, 0);
+    world->getPathTiledMap()->setType(openNodes[0]->coord.x, openNodes[0]->coord.y, 0);
 
     openNodes.erase(openNodes.begin());// Remove the first element
 

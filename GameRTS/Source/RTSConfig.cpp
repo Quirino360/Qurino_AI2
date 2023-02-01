@@ -4,6 +4,7 @@ Vector2I GameOptions::s_Resolution = Vector2I(3840, 2160);
 Vector2 GameOptions::s_MapMovementSpeed = Vector2(1024.0f, 1024.0f);
 
 bool GameOptions::s_MapShowGrid = false;
+bool GameOptions::s_renderPathTiles = true;
 Color GameOptions::s_MapGridColor = Color(255, 0, 0, 255);
 
 const Vector2I

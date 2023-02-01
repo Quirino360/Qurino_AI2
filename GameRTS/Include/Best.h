@@ -11,7 +11,7 @@ public:
   ~Best() = default;
 
   virtual void
-    Init(RTSTiledMap* _tileMap);
+    Init(RTSWorld* _world);
 
   virtual void
     update();

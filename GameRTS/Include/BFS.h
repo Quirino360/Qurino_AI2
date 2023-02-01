@@ -2,6 +2,7 @@
 #include "PathFinder.h"
 
 class RTSTiledMap;
+class RTSWorld;
 
 class BFS : public PathFinder
 {
@@ -11,7 +12,7 @@ public:
   ~BFS() = default;
 
   virtual void 
-  Init(RTSTiledMap* _tileMap);
+  Init(RTSWorld* _world);
 
   virtual void
   update(float deltaTime);

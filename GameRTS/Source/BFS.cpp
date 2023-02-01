@@ -1,10 +1,13 @@
 #include "BFS.h"
+#include "RTSWorld.h"
 #include "RTSTiledMap.h"
 
 
-void BFS::Init(RTSTiledMap* _tileMap)
+void BFS::Init(RTSWorld* _world)
 {
-  tileMap = _tileMap;
+  world = _world;
+
+  setNodes();
 }
 
 void BFS::update(float deltaTime)
@@ -30,12 +33,12 @@ void BFS::render()
     {
       for (uint16 i = 0; i < openNodes.size(); i++)
       {
-        tileMap->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, 0);
+        world->getPathTiledMap()->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, 3);
       }
 
       for (uint16 i = 0; i < closedNodes.size(); i++)
       {
-        tileMap->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, 2);
+        world->getPathTiledMap()->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, 4);
       }
 
       elapsedFrames = 0;
@@ -64,8 +67,8 @@ void BFS::run()
       nodeAux = closedNodes[closedNodes.size() - 1]->coord + conections.nextNodes[i];
 
       if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
-        nodeAux.x < tileMap->getMapSize().x && nodeAux.y < tileMap->getMapSize().y
-        && tileMap->getType(nodeAux.x, nodeAux.y) == 1)
+        nodeAux.x < world->getTiledMap()->getMapSize().x && nodeAux.y < world->getTiledMap()->getMapSize().y
+        && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) == 1)
       {
         // agregamos el nodo a la lista abaierta si es que no esta en ninguna de las 2 listas
         if (false == isInOpenList(nodeAux) && false == isInClosedList(nodeAux))

@@ -12,6 +12,7 @@ using namespace geEngineSDK;
 
 class RTSTexture;
 
+/*
 namespace TERRAIN_TYPE {
   enum E {
     kWater = 0,
@@ -22,6 +23,15 @@ namespace TERRAIN_TYPE {
   };
 }
 
+namespace PathType {
+  enum E {
+    kUntiled = 0,
+    kStart,
+    kTarget,
+    kOpenList,
+    kClosedList
+  };
+}/**/
 
 // This uses the RTSConfig Class
 class RTSTiledMap
@@ -69,7 +79,9 @@ class RTSTiledMap
 
  public:
   bool
-  init(sf::RenderTarget* pTarget, const Vector2I& mapSize);
+  init(sf::RenderTarget* pTarget, const Vector2I& mapSize,
+  String  _textureRoute = "Textures/Terrain",
+  Vector<String> _texturesNames = Vector<String>());
 
   void
   destroy();
@@ -99,6 +111,9 @@ class RTSTiledMap
 
   int8
   getType(const int32 x, const int32 y) const;
+
+  void
+  setMapType(const uint8 type);
 
   void
   setType(const int32 x, const int32 y, const uint8 idtype);
@@ -169,6 +184,12 @@ class RTSTiledMap
     uint8 red, uint8 green = 255, uint8 blue = 255, uint8 alpha = 255);/**/
 
  private:
+
+   String textureRoute;
+   //String textureRoute = "Textures/PathType";
+
+  Vector<String> textureNames;
+
   Vector2I m_mapSize;
   Vector<MapTile> m_mapGrid; // "The map"
   Vector<RTSTexture> m_mapTextures;

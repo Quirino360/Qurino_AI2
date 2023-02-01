@@ -1,7 +1,7 @@
 #include "PathFinder.h"
 
+#include "RTSWorld.h"
 #include "RTSTiledMap.h"
-
 
 PathFinder::PathFinder()
 {
@@ -10,6 +10,8 @@ PathFinder::PathFinder()
 
 void PathFinder::update(float deltaTime)
 {
+
+
 }
 
 void PathFinder::setNodes(const Vector2I& _startCoord, const Vector2I& _targetCoord)
@@ -25,6 +27,9 @@ void PathFinder::setNodes(const Vector2I& _startCoord, const Vector2I& _targetCo
   }
 
   openNodes.push_back(new Node(startCoord, nullptr));
+
+  world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 1);
+  world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 2);
 
   isNodesSeted = true;
 }
@@ -44,7 +49,7 @@ void PathFinder::showPath(Vector2I _target)
 
   while (fatherNodeAux != nullptr)
   {
-    tileMap->setType(fatherNodeAux->coord.x, fatherNodeAux->coord.y, 1);
+    world->getPathTiledMap()->setType(fatherNodeAux->coord.x, fatherNodeAux->coord.y, 4);
     fatherNodeAux = fatherNodeAux->fatherNode;
   }
 

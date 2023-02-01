@@ -1,10 +1,11 @@
 #include "DFS.h"
+#include "RTSWorld.h"
 #include "RTSTiledMap.h"
 
 
-void DFS::Init(RTSTiledMap* _tileMap)
+void DFS::Init(RTSWorld* _world)
 {
-  tileMap = _tileMap;
+  world = _world;
 }
 
 void DFS::update()
@@ -42,8 +43,8 @@ void DFS::run(const Vector2I& _startCoord, const Vector2I& _targetCoord)
       nodeAux = closedNodes[closedNodes.size() - 1]->coord + conections.nextNodes[i];
 
       if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
-        nodeAux.x < tileMap->getMapSize().x && nodeAux.y < tileMap->getMapSize().y
-        && tileMap->getType(nodeAux.x, nodeAux.y) == 1)
+        nodeAux.x < world->getTiledMap()->getMapSize().x && nodeAux.y < world->getTiledMap()->getMapSize().y
+        && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) == 1)
       {
         // agregamos el nodo a la lista abaierta si es que no esta
         if (false == isInOpenList(nodeAux) && false == isInClosedList(nodeAux))
@@ -78,7 +79,7 @@ bool DFS::step()
   {
 
     closedNodes.push_back(openNodes[openNodes.size() - 1]); // agregamos a los nodos cerrados 
-    tileMap->setType(openNodes[openNodes.size() - 1]->coord.x, openNodes[openNodes.size() - 1]->coord.y, 0);
+    world->getPathTiledMap()->setType(openNodes[openNodes.size() - 1]->coord.x, openNodes[openNodes.size() - 1]->coord.y, 0);
 
 
     openNodes.pop_back();// Remove the last element

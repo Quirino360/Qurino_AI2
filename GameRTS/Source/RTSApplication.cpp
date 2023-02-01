@@ -216,8 +216,9 @@ RTSApplication::updateFrame() {
   axisMovement *= GameOptions::s_MapMovementSpeed * deltaTime;
 
   m_gameWorld.getTiledMap()->moveCamera(axisMovement.x, axisMovement.y);
+  m_gameWorld.getPathTiledMap()->moveCamera(axisMovement.x, axisMovement.y);
 
-  m_gameWorld.getTiledMap()->setColor(1,1, 252, 3, 3);
+  //m_gameWorld.getTiledMap()->setColor(1,1, 252, 3, 3);
 
   //Update the world
   m_gameWorld.update(deltaTime);
@@ -257,7 +258,7 @@ RTSApplication::postInit() {
 
   // PathFinder
 
-  m_bfs.Init(m_gameWorld.getTiledMap());
+  m_bfs.Init(&m_gameWorld);
   //m_dfs.Init(m_gameWorld.getTiledMap());
   
   pFinder = &m_bfs;
@@ -343,6 +344,7 @@ mainMenu(RTSApplication* pApp) {
       10240.0f);
 
     ImGui::Checkbox("Show grid", &GameOptions::s_MapShowGrid);
+    ImGui::Checkbox("Show path", &GameOptions::s_renderPathTiles);
   }
   ImGui::End();
 

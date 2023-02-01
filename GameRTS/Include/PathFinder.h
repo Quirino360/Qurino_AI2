@@ -2,7 +2,7 @@
 #include <gePrerequisitesUtil.h>
 #include <geVector2I.h>
 
-class RTSTiledMap;
+class RTSWorld;
 
 using geEngineSDK::Vector2I;
 
@@ -104,6 +104,7 @@ struct Conections
   const Vector2I downLeft =   Vector2I(-1, 1 );
 };
 
+//textureNames = {"Untiled", "Start", "Target", "OpenList", "ClosedList" };
 
 class PathFinder
 {
@@ -112,7 +113,7 @@ public:
   ~PathFinder() = default;
 
   virtual void
-  Init(RTSTiledMap* _tileMap) = 0;
+  Init(RTSWorld* _world) = 0;
 
   virtual void
   update(float deltaTime);
@@ -161,7 +162,7 @@ protected:
   bool isFindingTarget = false;
 
 
-  RTSTiledMap* tileMap;
+  RTSWorld* world;
 
   geEngineSDK::Vector<Node*> openNodes;
 
