@@ -29,7 +29,8 @@ namespace PathType {
     kStart,
     kTarget,
     kOpenList,
-    kClosedList
+    kClosedList,
+    Path
   };
 }/**/
 

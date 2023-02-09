@@ -91,9 +91,10 @@ RTSApplication::initSystems() {
   }
   
   
+  
   if (!m_arialFont->loadFromFile("Fonts/arial.ttf")) {
     GE_EXCEPT(FileNotFoundException, "Arial font not found");
-  }
+  }/**/
 
   //m_window->setVerticalSyncEnabled(true);
 
@@ -218,6 +219,9 @@ RTSApplication::updateFrame() {
   m_gameWorld.getTiledMap()->moveCamera(axisMovement.x, axisMovement.y);
   m_gameWorld.getPathTiledMap()->moveCamera(axisMovement.x, axisMovement.y);
 
+  
+  //mousePosition
+
   //m_gameWorld.getTiledMap()->setColor(1,1, 252, 3, 3);
 
   //Update the world
@@ -259,9 +263,11 @@ RTSApplication::postInit() {
   // PathFinder
 
   m_bfs.Init(&m_gameWorld);
-  //m_dfs.Init(m_gameWorld.getTiledMap());
+  m_dfs.Init(&m_gameWorld);
+  m_best.Init(&m_gameWorld);
   
   pFinder = &m_bfs;
+
 
 }
 
@@ -366,27 +372,27 @@ PathFindingMenu(RTSApplication* pApp)
       if (1 == pathType)
       {
         pathTypeName = "BREADTH FIRST SEARCH";
-        pApp->setPathFinder(&pApp->m_bfs);
+        pApp->setPathFinder(pApp->m_bfs);
       }
       else if (2 == pathType)
       {
         pathTypeName = "DEPTH FIRST SEARCH";
-        pApp->setPathFinder(&pApp->m_bfs);
+        pApp->setPathFinder(pApp->m_dfs);
       }
       else if (3 == pathType)
       {
         pathTypeName = "BEST";
-        pApp->setPathFinder(&pApp->m_bfs);
+        pApp->setPathFinder(pApp->m_best);
       }
       else if (4 == pathType)
       {
         pathTypeName = "DIJKSTRA";
-        pApp->setPathFinder(&pApp->m_bfs);
+        pApp->setPathFinder(pApp->m_bfs);
       }
       else if (5 == pathType)
       {
         pathTypeName = "ASTAR";
-        pApp->setPathFinder(&pApp->m_bfs);
+        pApp->setPathFinder(pApp->m_bfs);
       }
     }
     ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();

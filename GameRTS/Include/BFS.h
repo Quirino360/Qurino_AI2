@@ -29,12 +29,5 @@ public:
   step();
 
 private:
-
-  Conections conections;
-
-  float stepPerFrames = 1;
-
-  float elapsedFrames = 0;
-
 };
 

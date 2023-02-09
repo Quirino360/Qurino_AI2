@@ -24,10 +24,10 @@ class Node
 {
 public:
   
-  Node(Vector2I& _coord, Node* _fatherNode) {
+  Node(Vector2I& _coord, Node* _fatherNode, float _weight) {
     coord = _coord;
     fatherNode = _fatherNode;
-    weight = 0; 
+    weight = _weight;
   }
 
   ~Node() = default;
@@ -36,7 +36,7 @@ public:
   Node* fatherNode = nullptr;
   float weight;
 
-  float getWeight() {
+  float getTotalWeight() {
     float _weight = weight;
     bool searchFather = true;
     Node* auxNode = fatherNode;
@@ -45,7 +45,7 @@ public:
     {
       if (auxNode != nullptr)
       {
-        _weight = auxNode->weight;
+        _weight += auxNode->weight;
         auxNode = auxNode->fatherNode;
       }
       else
@@ -153,15 +153,10 @@ protected:
 
   Node* getNodeInClosedList(Vector2I _target);
 
+  virtual void
+  resetPath();
 
 protected:
-  bool isNodesSeted = false;
-
-  bool isTargetFounded = false;
-
-  bool isFindingTarget = false;
-
-
   RTSWorld* world;
 
   geEngineSDK::Vector<Node*> openNodes;
@@ -171,6 +166,16 @@ protected:
   Vector2I startCoord;
 
   Vector2I targetCoord;
+
+  Conections conections;
+
+  float stepPerFrames = 1;
+
+  float elapsedFrames = 0;
+
+  bool isNodesSeted = false;
+
+  bool isFindingTarget = false;
 };
 
 

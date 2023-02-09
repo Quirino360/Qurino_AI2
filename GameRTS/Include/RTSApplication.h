@@ -6,6 +6,8 @@
 #include "PathFinder.h";
 #include "BFS.h"
 #include "DFS.h"
+#include "Best.h"
+
 
 using namespace geEngineSDK;
 
@@ -43,8 +45,8 @@ public:
  }
 
  void
-   setPathFinder(PathFinder* _pFinderType) {
-   pFinder = _pFinderType;
+   setPathFinder(PathFinder& _pFinderType) {
+   pFinder = &_pFinderType;
  }
 
 protected:
@@ -75,15 +77,16 @@ private:
   renderFrame();
 
 public:
+  PathFinder* pFinder;
   BFS m_bfs;
-
+  DFS m_dfs;
+  Best m_best;
 
 
 private:
   sf::RenderWindow* m_window;
   sf::Font* m_arialFont;
   RTSWorld m_gameWorld;
-  PathFinder* pFinder;
   //DFS m_dfs;
 
 

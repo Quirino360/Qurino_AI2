@@ -1,6 +1,6 @@
 #include "RTSConfig.h"
 
-Vector2I GameOptions::s_Resolution = Vector2I(3840, 2160);
+Vector2I GameOptions::s_Resolution = Vector2I(1280, 720);
 Vector2 GameOptions::s_MapMovementSpeed = Vector2(1024.0f, 1024.0f);
 
 bool GameOptions::s_MapShowGrid = false;

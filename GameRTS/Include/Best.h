@@ -11,23 +11,25 @@ public:
   ~Best() = default;
 
   virtual void
-    Init(RTSWorld* _world);
+  Init(RTSWorld* _world);
 
   virtual void
-    update();
+  update(float deltaTime);
+
+  virtual void
+  render();
 
   // main algorithm
   virtual void
-    run(const Vector2I& _startCoord, const Vector2I& _targetCoord);
+  run();
 
   // search for new nodes and 
   virtual bool
-    step();
+  step();
 
 private:
 
-  Conections conections;
+  float nextToCheck = 0;
 
-  bool canRun = true;
 };
 

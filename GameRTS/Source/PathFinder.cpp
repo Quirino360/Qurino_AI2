@@ -16,17 +16,26 @@ void PathFinder::update(float deltaTime)
 
 void PathFinder::setNodes(const Vector2I& _startCoord, const Vector2I& _targetCoord)
 {
-  startCoord = _startCoord;
-  targetCoord = _targetCoord;
-
   //nodes are valid coords
   if (startCoord.x == NULL && startCoord.y == NULL &&
     targetCoord.x == NULL && targetCoord.y == NULL)
   {
+    isNodesSeted = false;
     return;
   }
 
-  openNodes.push_back(new Node(startCoord, nullptr));
+  if (true == isNodesSeted)
+  {
+    world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 0);
+    world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 0);
+
+  }
+
+  startCoord = _startCoord;
+  targetCoord = _targetCoord;
+
+  openNodes.clear();
+  openNodes.push_back(new Node(startCoord, nullptr, world->getTiledMap()->getCost(startCoord.x, startCoord.y)));
 
   world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 1);
   world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 2);
@@ -36,7 +45,7 @@ void PathFinder::setNodes(const Vector2I& _startCoord, const Vector2I& _targetCo
 
 void PathFinder::showPath(Vector2I _target)
 {
-  Node trgt = Node(Vector2I(0,0), nullptr);
+  Node trgt = Node(Vector2I(0,0), nullptr, 0);
   for (int i = 0; i < closedNodes.size(); i++)
   {
     if (closedNodes[i]->coord == _target)
@@ -44,12 +53,14 @@ void PathFinder::showPath(Vector2I _target)
       trgt = *closedNodes[i];
     }
   }
+
+  world->getPathTiledMap()->setType(trgt.coord.x, trgt.coord.y, 5);
   
   Node* fatherNodeAux = trgt.fatherNode;
 
   while (fatherNodeAux != nullptr)
   {
-    world->getPathTiledMap()->setType(fatherNodeAux->coord.x, fatherNodeAux->coord.y, 4);
+    world->getPathTiledMap()->setType(fatherNodeAux->coord.x, fatherNodeAux->coord.y, 5);
     fatherNodeAux = fatherNodeAux->fatherNode;
   }
 
@@ -90,6 +101,32 @@ Node* PathFinder::getNodeInClosedList(Vector2I _target)
   }
   return nullptr;
 }
+
+void PathFinder::resetPath()
+{
+  for (uint32 i = 0; i < openNodes.size(); i++)
+  {
+    if (openNodes[i] != nullptr)
+    {
+      delete openNodes[i];
+    }
+  }
+  openNodes.clear();
+
+  for (uint32 i = 0; i < closedNodes.size(); i++)
+  {
+    if (closedNodes[i] != nullptr)
+    {
+      delete closedNodes[i];
+    }
+  }
+  closedNodes.clear();
+
+  isNodesSeted = false;
+  isFindingTarget = false;
+}
+
+
 
 // explorar los nodos
 // checar que sea el nodo que buscamos

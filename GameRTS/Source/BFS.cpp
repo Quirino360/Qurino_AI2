@@ -13,7 +13,7 @@ void BFS::Init(RTSWorld* _world)
 void BFS::update(float deltaTime)
 {
   // show step by step
-  elapsedFrames += 60;
+  elapsedFrames += 1;
 
   if (true == isFindingTarget)
   {
@@ -41,8 +41,11 @@ void BFS::render()
         world->getPathTiledMap()->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, 4);
       }
 
-      elapsedFrames = 0;
+      world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 1);
+      world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 2);
 
+
+      elapsedFrames = 0;
     }
   }
 }
@@ -57,9 +60,10 @@ void BFS::run()
   Vector2I nodeAux = { 0 , 0 };
 
   // mientras no encuentre el target node
-  if(isTargetFounded == false)
+  if(isFindingTarget == true)
   {
     step();
+
     //consigue los siguientes nodos, en caso de no encotrar el target
     for (int i = 0; i < conections.nextNodes.size(); i++)
     {
@@ -68,14 +72,28 @@ void BFS::run()
 
       if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
         nodeAux.x < world->getTiledMap()->getMapSize().x && nodeAux.y < world->getTiledMap()->getMapSize().y
-        && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) == 1)
+        && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) == 1) //cambiar a constantes
       {
         // agregamos el nodo a la lista abaierta si es que no esta en ninguna de las 2 listas
         if (false == isInOpenList(nodeAux) && false == isInClosedList(nodeAux))
         {
-          openNodes.push_back(new Node(nodeAux, closedNodes[closedNodes.size() - 1]));
+          openNodes.push_back(new Node(nodeAux, closedNodes[closedNodes.size() - 1], 0));
         }
       }
+    }
+   
+    if (isFindingTarget == false)
+    {
+      for (uint16 i = 0; i < openNodes.size(); i++)
+      {
+        world->getPathTiledMap()->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, 3);
+      }
+      for (uint16 i = 0; i < closedNodes.size(); i++)
+      {
+        world->getPathTiledMap()->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, 4);
+      }
+
+      showPath(targetCoord);
     }
   }
 }
@@ -92,13 +110,10 @@ bool BFS::step()
     // econtro el target node
     else if (openNodes[0]->coord == targetCoord)
     {
-      isTargetFounded = true;
       isFindingTarget = false;
 
       closedNodes.push_back(openNodes[0]); // agregamos a los nodos cerrados 
       openNodes.erase(openNodes.begin());// Remove the first element
-
-      showPath(targetCoord);
 
       return true;
     }

@@ -36,7 +36,7 @@ class RTSWorld
 
   RTSTiledMap*
     getPathTiledMap() {
-    return m_pTiledPathMap;
+    return m_pathMap;
   }
 
   void
@@ -47,7 +47,7 @@ class RTSWorld
 
  private:
    RTSTiledMap* m_pTiledMap; // The map
-   RTSTiledMap* m_pTiledPathMap; // The map
+   RTSTiledMap* m_pathMap; // The map
 
   //List<RTSUnitType*> m_lstUnitTypes;
   //List<RTSUnit*> m_lstUnits;

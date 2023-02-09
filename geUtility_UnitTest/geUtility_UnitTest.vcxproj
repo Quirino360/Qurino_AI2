@@ -98,7 +98,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./Include;$(SolutionDir)geUtility/Include/;$(SolutionDir)geUtility/Include/Externals/;$(DEVLIBS)GoogleTest/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Include;$(SolutionDir)geUtility/Include/;$(SolutionDir)geUtility/Include/Externals/;$(DEVLIBS)GoogleTest/include/;$(DEVLIBS)vld/src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -108,7 +108,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib/$(PlatformShortName)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib/$(PlatformShortName)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;%(AdditionalLibraryDirectories);$(DEVLIBS)vld/lib/;$(DEVLIBS)vld/lib/;$(DEVLIBS)vld/src/bin/$(PlatformTarget)/$(ConfigurationName)/</AdditionalLibraryDirectories>
       <AdditionalDependencies>geUtilityd.lib;gtestd.lib;gtest_maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
@@ -123,7 +123,7 @@
       <WarningLevel>Level4</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./Include;$(SolutionDir)geUtility/Include/;$(SolutionDir)geUtility/Include/Externals/;$(DEVLIBS)GoogleTest/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Include;$(SolutionDir)geUtility/Include/;$(SolutionDir)geUtility/Include/Externals/;$(DEVLIBS)GoogleTest/include/;$(DEVLIBS)vld/src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -133,7 +133,7 @@
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib/$(PlatformShortName)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib/$(PlatformShortName)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;%(AdditionalLibraryDirectories);$(DEVLIBS)vld/lib/;$(DEVLIBS)vld/lib/;$(DEVLIBS)vld/src/bin/$(PlatformTarget)/$(ConfigurationName)/</AdditionalLibraryDirectories>
       <AdditionalDependencies>geUtilityd.lib;gtestd.lib;gtest_maind.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
     </Link>
@@ -150,7 +150,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./Include;$(SolutionDir)geUtility/Include/;$(SolutionDir)geUtility/Include/Externals/;$(DEVLIBS)GoogleTest/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Include;$(SolutionDir)geUtility/Include/;$(SolutionDir)geUtility/Include/Externals/;$(DEVLIBS)GoogleTest/include/;$(DEVLIBS)vld/src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -161,7 +161,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib/$(PlatformShortName)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib/$(PlatformShortName)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;%(AdditionalLibraryDirectories);$(DEVLIBS)vld/lib/;$(DEVLIBS)vld/lib/;$(DEVLIBS)vld/src/bin/$(PlatformTarget)/$(ConfigurationName)/</AdditionalLibraryDirectories>
       <AdditionalDependencies>geUtility.lib;gtest.lib;gtest_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
@@ -177,7 +177,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>./Include;$(SolutionDir)geUtility/Include/;$(SolutionDir)geUtility/Include/Externals/;$(DEVLIBS)GoogleTest/include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>./Include;$(SolutionDir)geUtility/Include/;$(SolutionDir)geUtility/Include/Externals/;$(DEVLIBS)GoogleTest/include/;$(DEVLIBS)vld/src/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <OpenMPSupport>true</OpenMPSupport>
       <RuntimeTypeInfo>false</RuntimeTypeInfo>
@@ -188,7 +188,7 @@
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(SolutionDir)Lib/$(PlatformShortName)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)Lib/$(PlatformShortName)/;$(DEVLIBS)GoogleTest/lib/$(PlatformTarget)/;%(AdditionalLibraryDirectories);$(DEVLIBS)vld/lib/;$(DEVLIBS)vld/lib/;$(DEVLIBS)vld/src/bin/$(PlatformTarget)/$(ConfigurationName)/</AdditionalLibraryDirectories>
       <AdditionalDependencies>geUtility.lib;gtest.lib;gtest_main.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
