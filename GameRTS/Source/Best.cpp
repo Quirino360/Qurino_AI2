@@ -15,18 +15,17 @@ void Best::update(float deltaTime)
   // show step by step
   elapsedFrames += 1;
 
-  if (searchingState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
+  if (searchState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
   {
-    searchingState = step();
+    searchState = step();
   }
 }
 
 void Best::render()
 {
   // render
-  if (searchingState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
+  if (searchState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
   {
-
     for (uint16 i = 0; i < openNodes.size(); i++)
     {
       world->getPathTiledMap()->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, 3);
@@ -42,6 +41,10 @@ void Best::render()
 
     elapsedFrames = 0;
   }
+  else if (searchState == SEARCHING_STATE::E::FOUND && elapsedFrames >= stepPerFrames)
+  {
+    showPath(targetCoord);
+  }
 }
 
 void Best::run()
@@ -53,7 +56,6 @@ void Best::run()
 
   if (step() != SEARCHING_STATE::FOUND)
   { 
-    showPath(targetCoord);
   }
 }
 
@@ -132,7 +134,7 @@ SEARCHING_STATE::E Best::step()
   openNodes.erase(openNodes.begin());// Remove the first element
 
 
-  if (openNodes[nodeID]->coord == targetCoord)
+  if (openNodes.size() != 0 && closedNodes[closedNodes.size() - 1]->coord == targetCoord)
   {
     return SEARCHING_STATE::FOUND;
   }

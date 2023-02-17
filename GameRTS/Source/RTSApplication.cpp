@@ -395,6 +395,8 @@ PathFindingMenu(RTSApplication* pApp)
         pApp->setPathFinder(pApp->m_bfs);
       }
     }
+
+    // ----------------- //
     ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
     if (ImGui::Button("Start Search"))
     {

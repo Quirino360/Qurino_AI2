@@ -194,7 +194,7 @@ public:
 
   void 
   startSearching() {
-    
+    searchState = SEARCHING_STATE::SEARCHING;
   }
 
 protected:
@@ -238,7 +238,7 @@ protected:
 
   bool isNodesSeted = false;
 
-  SEARCHING_STATE::E searchingState = SEARCHING_STATE::E::SEARCHING;
+  SEARCHING_STATE::E searchState = SEARCHING_STATE::NOT_SEARCHING;
 };
 
 

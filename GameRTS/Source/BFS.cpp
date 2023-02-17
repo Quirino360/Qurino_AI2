@@ -15,16 +15,16 @@ void BFS::update(float deltaTime)
   // show step by step
   elapsedFrames += 1;
 
-  if (searchingState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
+  if (searchState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
   {
-    searchingState = step();
+    searchState = step();
   }
 }
 
 void BFS::render()
 {
   // render
-  if (searchingState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
+  if (searchState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
   {
     for (uint16 i = 0; i < openNodes.size(); i++)
     {
@@ -41,6 +41,10 @@ void BFS::render()
 
 
     elapsedFrames = 0;
+  }
+  else if (searchState == SEARCHING_STATE::E::FOUND && elapsedFrames >= stepPerFrames)
+  {
+    showPath(targetCoord);
   }
 }
 
@@ -96,12 +100,11 @@ SEARCHING_STATE::E BFS::step()
     return SEARCHING_STATE::NOT_FOUND;
   }
 
-  float nodeID = nextNodeID();
-  closedNodes.push_back(openNodes[nodeID]); // agregamos a los nodos cerrados 
+  closedNodes.push_back(openNodes[nextNodeID()]); // agregamos a los nodos cerrados 
   openNodes.erase(openNodes.begin());// Remove the first element
 
 
-  if (openNodes[nodeID]->coord == targetCoord)
+  if (openNodes.size() != 0 && closedNodes[closedNodes.size() - 1]->coord == targetCoord)
   {
     return SEARCHING_STATE::FOUND;
   }
