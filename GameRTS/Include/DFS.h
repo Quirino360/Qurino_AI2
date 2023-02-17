@@ -23,8 +23,13 @@ public:
   virtual void
   run();
 
-  // search for new nodes and 
-  virtual bool
+  virtual uint32
+  nextNodeID();
+
+  virtual void
+  addConnections(const Node& node);
+
+  virtual SEARCHING_STATE::E
   step();
 
 private:

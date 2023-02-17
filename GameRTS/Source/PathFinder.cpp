@@ -3,6 +3,17 @@
 #include "RTSWorld.h"
 #include "RTSTiledMap.h"
 
+ const Vector2I Node::Conections::TOP = Vector2I(0, -1);
+ const Vector2I Node::Conections::TOPRIGHT = Vector2I(1, -1);
+ const Vector2I Node::Conections::TOPLEFT = Vector2I(-1, -1);
+ const Vector2I Node::Conections::LEFT = Vector2I(-1, 0);
+ const Vector2I Node::Conections::RIGHT = Vector2I(1, 0);
+ const Vector2I Node::Conections::DOWN = Vector2I(0, 1);
+ const Vector2I Node::Conections::DOWNRIGHT = Vector2I(1, 1);
+ const Vector2I Node::Conections::DOWNLEFT = Vector2I(-1, 1);
+ 
+
+
 PathFinder::PathFinder()
 {
 
@@ -123,7 +134,7 @@ void PathFinder::resetPath()
   closedNodes.clear();
 
   isNodesSeted = false;
-  isFindingTarget = false;
+
 }
 
 
