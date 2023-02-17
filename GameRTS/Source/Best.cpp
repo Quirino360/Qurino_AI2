@@ -102,7 +102,7 @@ void Best::addConnections(const Node& node)
       if (true == isInClosedList(coordAux))
       {
         Node nodeInClosedList = *getNodeInClosedList(coordAux);
-        Node newPath = Node(coordAux, closedNodes[closedNodes.size() - 1], world->getTiledMap()->getCost(coordAux.x, coordAux.y));//diferent father
+        Node newPath = Node(coordAux, closedNodes[closedNodes.size() - 1], 1, world->getTiledMap()->getCost(coordAux.x, coordAux.y));//diferent father
 
         if (newPath.weight < nodeInClosedList.weight)
         {
@@ -113,7 +113,7 @@ void Best::addConnections(const Node& node)
       // agregamos el nodo a la lista abaierta, si es que no esta en la lista abierta o cerrada
       if (false == isInOpenList(coordAux) && false == isInClosedList(coordAux))
       {
-        openNodes.push_back(new Node(coordAux, closedNodes[closedNodes.size() - 1], world->getTiledMap()->getCost(coordAux.x, coordAux.y)));
+        openNodes.push_back(new Node(coordAux, closedNodes[closedNodes.size() - 1], 1, world->getTiledMap()->getCost(coordAux.x, coordAux.y)));
       }
     }
   }
@@ -134,7 +134,7 @@ SEARCHING_STATE::E Best::step()
   openNodes.erase(openNodes.begin());// Remove the first element
 
 
-  if (openNodes.size() != 0 && closedNodes[closedNodes.size() - 1]->coord == targetCoord)
+  if (closedNodes[closedNodes.size() - 1]->coord == targetCoord)
   {
     return SEARCHING_STATE::FOUND;
   }

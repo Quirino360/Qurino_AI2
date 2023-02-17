@@ -90,10 +90,16 @@ public:
   const float& _distance = 0, const float& _weight = 0) {
     coord = _coord;
     fatherNode = _fatherNode;
-    distance = _distance;
+
     if (fatherNode != nullptr)
     {
+      distance = _distance + fatherNode->distance;
       weight = _weight + fatherNode->weight;
+    }
+    else
+    {
+      distance = _distance;
+      weight = _weight;
     }
   }
 

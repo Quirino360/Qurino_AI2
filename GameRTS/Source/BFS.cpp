@@ -104,7 +104,7 @@ SEARCHING_STATE::E BFS::step()
   openNodes.erase(openNodes.begin());// Remove the first element
 
 
-  if (openNodes.size() != 0 && closedNodes[closedNodes.size() - 1]->coord == targetCoord)
+  if (closedNodes[closedNodes.size() - 1]->coord == targetCoord)
   {
     return SEARCHING_STATE::FOUND;
   }

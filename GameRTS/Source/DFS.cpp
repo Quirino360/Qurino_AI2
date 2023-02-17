@@ -79,7 +79,7 @@ void DFS::addConnections(const Node& node)
       // agregamos el nodo a la lista abaierta si es que no esta
       if (false == isInOpenList(nodeAux) && false == isInClosedList(nodeAux))
       {
-        openNodes.push_back(new Node(nodeAux, closedNodes[closedNodes.size() - 1], 0));
+        openNodes.push_back(new Node(nodeAux, closedNodes[closedNodes.size() - 1]));
       }
     }
   }
@@ -95,10 +95,11 @@ SEARCHING_STATE::E DFS::step()
   }
 
   closedNodes.push_back(openNodes[nextNodeID()]); // agregamos a los nodos cerrados 
-  openNodes.erase(openNodes.begin());// Remove the first element
+  openNodes.pop_back(); // Remove the last element
+  //openNodes.erase(openNodes.begin());// Remove the first element
 
 
-  if (openNodes.size() != 0 && closedNodes[closedNodes.size() - 1]->coord == targetCoord)
+  if (closedNodes[closedNodes.size() - 1]->coord == targetCoord)
   {
     return SEARCHING_STATE::FOUND;
   }
