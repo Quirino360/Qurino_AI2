@@ -53,10 +53,6 @@ void Best::run()
   {
     setNodes();
   }
-
-  if (step() != SEARCHING_STATE::FOUND)
-  { 
-  }
 }
 
 uint32 Best::nextNodeID()
@@ -64,15 +60,15 @@ uint32 Best::nextNodeID()
   //*get next node* // ya no esta en lista abierta y lo pone en la mano
   // ver cual es la ruta mas barata
   float nextToCheck = 0;
-  float cheapest = 999999999999;
-  float totalWeight = 0;
+  float shorter = 999999999999;
+  float totalDistance = 0;
 
   for (uint32 i = 0; i < openNodes.size(); i++)
   {
-    totalWeight = openNodes[i]->weight;
-    if (totalWeight < cheapest)
+    totalDistance = openNodes[i]->distance;
+    if (totalDistance < shorter)
     {
-      cheapest = totalWeight;
+      shorter = totalDistance;
       nextToCheck = i;
     };
   }
@@ -81,39 +77,65 @@ uint32 Best::nextNodeID()
 }
 
 
-void Best::addConnections(const Node& node)
+void Best::addConnections(Node* node)
 {
   //adicionar los nodos a la lista de posibilidades (funcion)
   //consigue los siguientes nodos, en caso de no encotrar el target
   Vector2I coordAux = { 0 , 0 };
+  float distanceAux = 0;
 
-  for (int i = 0; i < node.conections.nextNodes.size(); i++)
-  {
+  for (int i = 0; i < node->conections.nextNodes.size(); i++)
+  {    
     // ultimo nodo en meterse a la lista cerrada
-    coordAux = closedNodes[closedNodes.size() - 1]->coord + node.conections.nextNodes[i];
+    coordAux = node->coord + node->conections.nextNodes[i];
+
+    if (coordAux == Node::Conections::TOP + node->coord || coordAux == Node::Conections::RIGHT + node->coord ||
+      coordAux == Node::Conections::DOWN + node->coord || coordAux == Node::Conections::LEFT + node->coord)
+    {
+      distanceAux = 1;
+    }
+    else 
+    {
+      distanceAux = 1.5;
+    }
+
 
     // si esta adentro del mapa y su tipo no es obstaculo
     if (coordAux.x >= 0 && coordAux.y >= 0 &&
       coordAux.x < world->getTiledMap()->getMapSize().x && coordAux.y < world->getTiledMap()->getMapSize().y
-      && world->getTiledMap()->getType(coordAux.x, coordAux.y) != 3)
+      && world->getTiledMap()->getType(coordAux.x, coordAux.y) == 1)
     {
 
-      // si tiene una ruta mas barata
+      // si tiene una ruta mas corta, se cambia la ruta
       if (true == isInClosedList(coordAux))
       {
         Node nodeInClosedList = *getNodeInClosedList(coordAux);
-        Node newPath = Node(coordAux, closedNodes[closedNodes.size() - 1], 1, world->getTiledMap()->getCost(coordAux.x, coordAux.y));//diferent father
+        Node newPath = Node(coordAux, node, distanceAux);//diferent father
 
-        if (newPath.weight < nodeInClosedList.weight)
+        // si tiene una ruta mas corta, se cambia la ruta
+        if (newPath.distance < nodeInClosedList.distance)
         {
-          getNodeInClosedList(coordAux)->fatherNode = closedNodes[closedNodes.size() - 1];
+          getNodeInClosedList(coordAux)->fatherNode = node;
+          getNodeInClosedList(coordAux)->setDistance(distanceAux);
         }
       }
+      /*else if (true == isInOpenList(coordAux))
+      {
+        Node nodeInOpenList = *getNodeInOpenList(coordAux);
+        Node newPath = Node(coordAux, node, distanceAux); //diferent father
+
+        if (newPath.distance < nodeInOpenList.distance)
+        {
+          getNodeInOpenList(coordAux)->fatherNode = node;
+          getNodeInOpenList(coordAux)->setDistance(distanceAux);
+
+        }
+      }/**/
 
       // agregamos el nodo a la lista abaierta, si es que no esta en la lista abierta o cerrada
       if (false == isInOpenList(coordAux) && false == isInClosedList(coordAux))
       {
-        openNodes.push_back(new Node(coordAux, closedNodes[closedNodes.size() - 1], 1, world->getTiledMap()->getCost(coordAux.x, coordAux.y)));
+        openNodes.push_back(new Node(coordAux, node, distanceAux));
       }
     }
   }
@@ -140,7 +162,7 @@ SEARCHING_STATE::E Best::step()
   }
   else
   {
-    addConnections(*closedNodes[closedNodes.size() - 1]);
+    addConnections(closedNodes[closedNodes.size() - 1]);
     return SEARCHING_STATE::SEARCHING;
   }
 }

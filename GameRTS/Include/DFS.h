@@ -1,8 +1,6 @@
 #pragma once
 #include "PathFinder.h"
 
-class RTSTiledMap;
-
 class DFS : public PathFinder
 {
 public:

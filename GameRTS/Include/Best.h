@@ -1,7 +1,6 @@
 #pragma once
 #include "PathFinder.h"
 
-class RTSTiledMap;
 
 class Best : public PathFinder
 {
@@ -27,7 +26,7 @@ public:
   nextNodeID();
 
   virtual void
-  addConnections(const Node& node);
+  addConnections(Node* node);
 
   virtual SEARCHING_STATE::E
   step();

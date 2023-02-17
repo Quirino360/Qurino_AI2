@@ -105,7 +105,6 @@ public:
 
   ~Node() = default;
 
-private:
   const Vector2I& getCoord() {
     return coord;
   }
@@ -131,11 +130,25 @@ private:
   }
 
   void setDistance(const float& _distance) {
-    distance = _distance;
+    if (fatherNode != nullptr)
+    {
+      distance = _distance + fatherNode->distance;
+    }
+    else
+    {
+      distance = _distance;
+    }
   }
 
   void setWeight(const float& _weight) {
-    weight = _weight;
+    if (fatherNode != nullptr)
+    {
+      weight = _weight + fatherNode->weight;
+    }
+    else
+    {
+      weight = _weight;
+    }
   }
 
 public:
@@ -216,13 +229,15 @@ protected:
   nextNodeID() = 0;
 
   virtual void
-  addConnections(const Node& node) {};
+  addConnections(Node* node) {};
 
   bool isInOpenList(Vector2I _target);
 
   bool isInClosedList(Vector2I _target);
 
   Node* getNodeInClosedList(Vector2I _target);
+
+  Node* getNodeInOpenList(Vector2I _target);
 
   virtual void
   resetPath();

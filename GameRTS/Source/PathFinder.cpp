@@ -113,6 +113,18 @@ Node* PathFinder::getNodeInClosedList(Vector2I _target)
   return nullptr;
 }
 
+Node* PathFinder::getNodeInOpenList(Vector2I _target)
+{
+  for (int i = 0; i < openNodes.size(); i++)
+  {
+    if (openNodes[i]->coord == _target)
+    {
+      return openNodes[i];
+    }
+  }
+  return nullptr;
+}
+
 void PathFinder::resetPath()
 {
   for (uint32 i = 0; i < openNodes.size(); i++)
