@@ -90,8 +90,9 @@ void Dijkstra::addConnections(Node* node)
     // si esta adentro del mapa y su tipo no es obstaculo
     if (coordAux.x >= 0 && coordAux.y >= 0 &&
       coordAux.x < world->getTiledMap()->getMapSize().x && coordAux.y < world->getTiledMap()->getMapSize().y
-      && world->getTiledMap()->getType(coordAux.x, coordAux.y) != 3)
+      && world->getTiledMap()->getType(coordAux.x, coordAux.y) == 1)
     {
+      
       weightAux = world->getTiledMap()->getCost(coordAux.x, coordAux.y) + node->weight;
 
       Node* nodeInClosedList = getNodeInClosedList(coordAux);
@@ -104,7 +105,6 @@ void Dijkstra::addConnections(Node* node)
           nodeInClosedList->setWeight(weightAux);
         }
       }
-      // agregamos el nodo a la lista abaierta, si es que no esta en la lista abierta o cerrada
       else if (nullptr == getNodeInOpenList(coordAux))
       {
         openNodes.push_back(new Node(coordAux, node, 0, weightAux));

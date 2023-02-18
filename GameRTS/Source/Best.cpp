@@ -82,7 +82,6 @@ void Best::addConnections(Node* node)
   //adicionar los nodos a la lista de posibilidades (funcion)
   //consigue los siguientes nodos, en caso de no encotrar el target
   Vector2I coordAux = { 0 , 0 };
-  float distanceAux = 0;
 
   for (int i = 0; i < node->conections.nextNodes.size(); i++)
   {    
@@ -94,6 +93,8 @@ void Best::addConnections(Node* node)
       coordAux.x < world->getTiledMap()->getMapSize().x && coordAux.y < world->getTiledMap()->getMapSize().y
       && world->getTiledMap()->getType(coordAux.x, coordAux.y) == 1)
     {
+      float distanceAux = 0;
+
       //
       auto dist = targetCoord - coordAux;
       distanceAux = dist.size();
@@ -101,8 +102,6 @@ void Best::addConnections(Node* node)
       Node* nodeInClosedList = getNodeInClosedList(coordAux);
       if (nullptr != nodeInClosedList)
       {
-        //Node newPath = Node(coordAux, node, distanceAux);//diferent father
-
         // si tiene una ruta mas corta, se cambia la ruta
         if (distanceAux < nodeInClosedList->distance)
         {

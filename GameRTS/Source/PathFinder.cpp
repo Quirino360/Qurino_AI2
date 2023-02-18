@@ -48,7 +48,7 @@ void PathFinder::setNodes(const Vector2I& _startCoord, const Vector2I& _targetCo
   openNodes.clear();
   
   auto dist = targetCoord - startCoord;
-  openNodes.push_back(new Node(startCoord, nullptr, dist.size(), world->getTiledMap()->getCost(startCoord.x, startCoord.y)));
+  openNodes.push_back(new Node(startCoord, nullptr, dist.size(), 0));
 
   world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 1);
   world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 2);
