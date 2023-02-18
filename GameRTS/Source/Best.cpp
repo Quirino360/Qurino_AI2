@@ -89,51 +89,29 @@ void Best::addConnections(Node* node)
     // ultimo nodo en meterse a la lista cerrada
     coordAux = node->coord + node->conections.nextNodes[i];
 
-    if (coordAux == Node::Conections::TOP + node->coord || coordAux == Node::Conections::RIGHT + node->coord ||
-      coordAux == Node::Conections::DOWN + node->coord || coordAux == Node::Conections::LEFT + node->coord)
-    {
-      distanceAux = 1;
-    }
-    else 
-    {
-      distanceAux = 1.5;
-    }
-
-
     // si esta adentro del mapa y su tipo no es obstaculo
     if (coordAux.x >= 0 && coordAux.y >= 0 &&
       coordAux.x < world->getTiledMap()->getMapSize().x && coordAux.y < world->getTiledMap()->getMapSize().y
       && world->getTiledMap()->getType(coordAux.x, coordAux.y) == 1)
     {
+      //
+      auto dist = targetCoord - coordAux;
+      distanceAux = dist.size();
 
-      // si tiene una ruta mas corta, se cambia la ruta
-      if (true == isInClosedList(coordAux))
+      Node* nodeInClosedList = getNodeInClosedList(coordAux);
+      if (nullptr != nodeInClosedList)
       {
-        Node nodeInClosedList = *getNodeInClosedList(coordAux);
-        Node newPath = Node(coordAux, node, distanceAux);//diferent father
+        //Node newPath = Node(coordAux, node, distanceAux);//diferent father
 
         // si tiene una ruta mas corta, se cambia la ruta
-        if (newPath.distance < nodeInClosedList.distance)
+        if (distanceAux < nodeInClosedList->distance)
         {
-          getNodeInClosedList(coordAux)->fatherNode = node;
-          getNodeInClosedList(coordAux)->setDistance(distanceAux);
+          nodeInClosedList->fatherNode = node;
+          nodeInClosedList->setDistance(distanceAux);
         }
       }
-      /*else if (true == isInOpenList(coordAux))
-      {
-        Node nodeInOpenList = *getNodeInOpenList(coordAux);
-        Node newPath = Node(coordAux, node, distanceAux); //diferent father
-
-        if (newPath.distance < nodeInOpenList.distance)
-        {
-          getNodeInOpenList(coordAux)->fatherNode = node;
-          getNodeInOpenList(coordAux)->setDistance(distanceAux);
-
-        }
-      }/**/
-
       // agregamos el nodo a la lista abaierta, si es que no esta en la lista abierta o cerrada
-      if (false == isInOpenList(coordAux) && false == isInClosedList(coordAux))
+      else if (nullptr == getNodeInOpenList(coordAux))
       {
         openNodes.push_back(new Node(coordAux, node, distanceAux));
       }
@@ -153,7 +131,7 @@ SEARCHING_STATE::E Best::step()
 
   float nodeID = nextNodeID();
   closedNodes.push_back(openNodes[nodeID]); // agregamos a los nodos cerrados 
-  openNodes.erase(openNodes.begin());// Remove the first element
+  openNodes.erase(openNodes.begin() + int(nodeID));// Remove the first element
 
 
   if (closedNodes[closedNodes.size() - 1]->coord == targetCoord)

@@ -248,7 +248,7 @@ namespace geEngineSDK {
      * @return The distance of this vector from (0,0).
      * @see getMax, getMin, sizeSquared
      */
-    int32
+    float
     size() const;
 
     /**
@@ -482,11 +482,11 @@ namespace geEngineSDK {
     return Math::min(x, y);
   }
 
-  FORCEINLINE int32
+  FORCEINLINE float
   Vector2I::size() const {
     int64 X64 = static_cast<int64>(x);
     int64 Y64 = static_cast<int64>(y);
-    return int32(Math::sqrt(float(X64 * X64 + Y64 * Y64)));
+    return Math::sqrt(float(X64 * X64 + Y64 * Y64));
   }
 
   FORCEINLINE int32

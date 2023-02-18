@@ -37,6 +37,7 @@ namespace SEARCHING_STATE
 class Node
 {
 public:
+  // estas conecciones ya existen en el mapa
   struct Conections
   {
     Conections() {
@@ -90,17 +91,8 @@ public:
   const float& _distance = 0, const float& _weight = 0) {
     coord = _coord;
     fatherNode = _fatherNode;
-
-    if (fatherNode != nullptr)
-    {
-      distance = _distance + fatherNode->distance;
-      weight = _weight + fatherNode->weight;
-    }
-    else
-    {
-      distance = _distance;
-      weight = _weight;
-    }
+    distance = _distance;
+    weight = _weight;
   }
 
   ~Node() = default;
@@ -130,25 +122,11 @@ public:
   }
 
   void setDistance(const float& _distance) {
-    if (fatherNode != nullptr)
-    {
-      distance = _distance + fatherNode->distance;
-    }
-    else
-    {
-      distance = _distance;
-    }
+    distance = _distance;
   }
 
   void setWeight(const float& _weight) {
-    if (fatherNode != nullptr)
-    {
-      weight = _weight + fatherNode->weight;
-    }
-    else
-    {
-      weight = _weight;
-    }
+    weight = _weight;
   }
 
 public:
@@ -230,10 +208,6 @@ protected:
 
   virtual void
   addConnections(Node* node) {};
-
-  bool isInOpenList(Vector2I _target);
-
-  bool isInClosedList(Vector2I _target);
 
   Node* getNodeInClosedList(Vector2I _target);
 

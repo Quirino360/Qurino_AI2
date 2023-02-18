@@ -80,10 +80,11 @@ void Dijkstra::addConnections(Node* node)
   //adicionar los nodos a la lista de posibilidades (funcion)
     //consigue los siguientes nodos, en caso de no encotrar el target
   Vector2I coordAux = { 0 , 0 };
+  float weightAux = 0;
 
   for (int i = 0; i < node->conections.nextNodes.size(); i++)
   {
-    // ultimo nodo en meterse a la lista cerrada
+    /*// ultimo nodo en meterse a la lista cerrada
     coordAux = node->coord + node->conections.nextNodes[i];
 
     // si esta adentro del mapa y su tipo no es obstaculo
@@ -92,16 +93,17 @@ void Dijkstra::addConnections(Node* node)
       && world->getTiledMap()->getType(coordAux.x, coordAux.y) != 3)
     {
 
+      weightAux = world->getTiledMap()->getCost(coordAux.x, coordAux.y);
       // si tiene una ruta mas barata
       if (true == isInClosedList(coordAux))
       {
         Node nodeInClosedList = *getNodeInClosedList(coordAux);
-        Node newPath = Node(coordAux, node, 1, world->getTiledMap()->getCost(coordAux.x, coordAux.y));//diferent father
+        Node newPath = Node(coordAux, node, 1, weightAux);//diferent father
 
         if (newPath.weight < nodeInClosedList.weight)
         {
           getNodeInClosedList(coordAux)->fatherNode = node;
-          getNodeInClosedList(coordAux)->setWeight(world->getTiledMap()->getCost(coordAux.x, coordAux.y));
+          getNodeInClosedList(coordAux)->setWeight(weightAux);
         }
       }
       /*else if (true == isInOpenList(coordAux))
@@ -115,14 +117,15 @@ void Dijkstra::addConnections(Node* node)
           getNodeInOpenList(coordAux)->setWeight(world->getTiledMap()->getCost(coordAux.x, coordAux.y));
 
         }
-      }/**/
+      }
 
       // agregamos el nodo a la lista abaierta, si es que no esta en la lista abierta o cerrada
       if (false == isInOpenList(coordAux) && false == isInClosedList(coordAux))
       {
-        openNodes.push_back(new Node(coordAux, node, 1, world->getTiledMap()->getCost(coordAux.x, coordAux.y)));
+        openNodes.push_back(new Node(coordAux, node, 1, weightAux));
       }
     }
+    /**/
   }
 }
 

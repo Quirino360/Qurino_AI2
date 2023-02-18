@@ -53,10 +53,6 @@ void DFS::run()
   }
   //openNodes.push_back(new Node(startCoord, nullptr));
 
-  if (step() != SEARCHING_STATE::FOUND)
-  {
-    showPath(targetCoord);
-  }/**/
 }
 
 uint32 DFS::nextNodeID()
@@ -77,7 +73,7 @@ void DFS::addConnections(Node* node)
       && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) != 3)
     {
       // agregamos el nodo a la lista abaierta si es que no esta
-      if (false == isInOpenList(nodeAux) && false == isInClosedList(nodeAux))
+      if (nullptr == getNodeInOpenList(nodeAux) && nullptr == getNodeInClosedList(nodeAux))
       {
         openNodes.push_back(new Node(nodeAux, node));
       }

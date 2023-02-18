@@ -46,7 +46,9 @@ void PathFinder::setNodes(const Vector2I& _startCoord, const Vector2I& _targetCo
   targetCoord = _targetCoord;
 
   openNodes.clear();
-  openNodes.push_back(new Node(startCoord, nullptr, world->getTiledMap()->getCost(startCoord.x, startCoord.y)));
+  
+  auto dist = targetCoord - startCoord;
+  openNodes.push_back(new Node(startCoord, nullptr, dist.size(), world->getTiledMap()->getCost(startCoord.x, startCoord.y)));
 
   world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 1);
   world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 2);
@@ -77,30 +79,7 @@ void PathFinder::showPath(Vector2I _target)
 
 }
 
-bool PathFinder::isInOpenList(Vector2I _target)
-{
-  for (int i = 0; i < openNodes.size(); i++)
-  {
-     if (openNodes[i]->coord == _target)
-     {
-        return true;
-     }
-  }
-  return false;
-}
-
-bool PathFinder::isInClosedList(Vector2I _target)
-{
-  for (int i = 0; i < closedNodes.size(); i++)
-  {
-    if (closedNodes[i]->coord == _target)
-    {
-      return true;
-    }
-  }
-  return false;
-}
-
+// como optimzar, para despues
 Node* PathFinder::getNodeInClosedList(Vector2I _target)
 {
   for (int i = 0; i < closedNodes.size(); i++)

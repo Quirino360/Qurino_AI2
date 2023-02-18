@@ -7,6 +7,8 @@
 #include "BFS.h"
 #include "DFS.h"
 #include "Best.h"
+#include "Dijkstra.h"
+#include "Astar.h"
 
 
 using namespace geEngineSDK;
@@ -81,6 +83,8 @@ public:
   BFS m_bfs;
   DFS m_dfs;
   Best m_best;
+  Dijkstra m_dijkstra;
+  Astar m_aStar;
 
 
 private:

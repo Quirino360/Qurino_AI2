@@ -54,13 +54,6 @@ void BFS::run()
   {
     setNodes();
   }
-
-
-  // mientras no encuentre el target node
-  if (step() != SEARCHING_STATE::FOUND)
-  {
-    showPath(targetCoord);
-  }
 }
 
 uint32 BFS::nextNodeID()
@@ -83,7 +76,7 @@ void BFS::addConnections(Node* node)
       && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) == 1) //cambiar a constantes
     {
       // agregamos el nodo a la lista abaierta si es que no esta en ninguna de las 2 listas
-      if (false == isInOpenList(nodeAux) && false == isInClosedList(nodeAux))
+      if (nullptr == getNodeInOpenList(nodeAux) && nullptr == getNodeInClosedList(nodeAux))
       {
         openNodes.push_back(new Node(nodeAux, node, 0));
       }

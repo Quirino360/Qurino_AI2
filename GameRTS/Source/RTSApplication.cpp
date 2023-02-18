@@ -265,6 +265,8 @@ RTSApplication::postInit() {
   m_bfs.Init(&m_gameWorld);
   m_dfs.Init(&m_gameWorld);
   m_best.Init(&m_gameWorld);
+  m_dijkstra.Init(&m_gameWorld);
+  m_aStar.Init(&m_gameWorld);
   
   pFinder = &m_bfs;
 
@@ -387,12 +389,12 @@ PathFindingMenu(RTSApplication* pApp)
       else if (4 == pathType)
       {
         pathTypeName = "DIJKSTRA";
-        pApp->setPathFinder(pApp->m_bfs);
+        pApp->setPathFinder(pApp->m_dijkstra);
       }
       else if (5 == pathType)
       {
         pathTypeName = "ASTAR";
-        pApp->setPathFinder(pApp->m_bfs);
+        pApp->setPathFinder(pApp->m_aStar);
       }
     }
 
