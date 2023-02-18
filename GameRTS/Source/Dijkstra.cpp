@@ -84,7 +84,7 @@ void Dijkstra::addConnections(Node* node)
 
   for (int i = 0; i < node->conections.nextNodes.size(); i++)
   {
-    /*// ultimo nodo en meterse a la lista cerrada
+    // ultimo nodo en meterse a la lista cerrada
     coordAux = node->coord + node->conections.nextNodes[i];
 
     // si esta adentro del mapa y su tipo no es obstaculo
@@ -92,41 +92,26 @@ void Dijkstra::addConnections(Node* node)
       coordAux.x < world->getTiledMap()->getMapSize().x && coordAux.y < world->getTiledMap()->getMapSize().y
       && world->getTiledMap()->getType(coordAux.x, coordAux.y) != 3)
     {
+      weightAux = world->getTiledMap()->getCost(coordAux.x, coordAux.y) + node->weight;
 
-      weightAux = world->getTiledMap()->getCost(coordAux.x, coordAux.y);
-      // si tiene una ruta mas barata
-      if (true == isInClosedList(coordAux))
+      Node* nodeInClosedList = getNodeInClosedList(coordAux);
+      if (nullptr != nodeInClosedList)
       {
-        Node nodeInClosedList = *getNodeInClosedList(coordAux);
-        Node newPath = Node(coordAux, node, 1, weightAux);//diferent father
-
-        if (newPath.weight < nodeInClosedList.weight)
+        // si tiene una ruta mas barata, se cambia el padre y el peso
+        if (weightAux < nodeInClosedList->weight)
         {
-          getNodeInClosedList(coordAux)->fatherNode = node;
-          getNodeInClosedList(coordAux)->setWeight(weightAux);
+          nodeInClosedList->fatherNode = node;
+          nodeInClosedList->setWeight(weightAux);
         }
       }
-      /*else if (true == isInOpenList(coordAux))
-      {
-        Node nodeInOpenList = *getNodeInOpenList(coordAux);
-        Node newPath = Node(coordAux, node, 0); //diferent father
-
-        if (newPath.distance < nodeInOpenList.distance)
-        {
-          getNodeInOpenList(coordAux)->fatherNode = node;
-          getNodeInOpenList(coordAux)->setWeight(world->getTiledMap()->getCost(coordAux.x, coordAux.y));
-
-        }
-      }
-
       // agregamos el nodo a la lista abaierta, si es que no esta en la lista abierta o cerrada
-      if (false == isInOpenList(coordAux) && false == isInClosedList(coordAux))
+      else if (nullptr == getNodeInOpenList(coordAux))
       {
-        openNodes.push_back(new Node(coordAux, node, 1, weightAux));
+        openNodes.push_back(new Node(coordAux, node, 0, weightAux));
       }
     }
-    /**/
   }
+
 }
 
 SEARCHING_STATE::E Dijkstra::step()
@@ -139,7 +124,7 @@ SEARCHING_STATE::E Dijkstra::step()
 
   float nodeID = nextNodeID();
   closedNodes.push_back(openNodes[nodeID]); // agregamos a los nodos cerrados 
-  openNodes.erase(openNodes.begin());// Remove the first element
+  openNodes.erase(openNodes.begin() + int(nodeID));// Remove the first element
 
 
   if (closedNodes[closedNodes.size() - 1]->coord == targetCoord)

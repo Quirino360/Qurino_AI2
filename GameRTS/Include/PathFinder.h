@@ -136,29 +136,6 @@ public:
   float distance;
   float weight; // el peso tiene que ir en el nodo de revision
 
-  //en best necesito una euristica para calcular esto, en este caso es la distancia
-  
-  /*float getTotalWeight() {
-    float _weight = weight;
-    bool searchFather = true;
-    Node* auxNode = fatherNode;
-
-    while (true == searchFather)
-    {
-      if (auxNode != nullptr)
-      {
-        _weight += auxNode->weight;
-        auxNode = auxNode->fatherNode;
-      }
-      else
-      {
-        searchFather = false;
-      }
-    }
-
-    return _weight;
-  }/**/
-
 };
 
 
