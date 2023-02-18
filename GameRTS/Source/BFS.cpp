@@ -68,15 +68,15 @@ uint32 BFS::nextNodeID()
   return 0;
 }
 
-void BFS::addConnections(const Node& node)
+void BFS::addConnections(Node* node)
 {
   Vector2I nodeAux = { 0 , 0 };
 
   //consigue los siguientes nodos, en caso de no encotrar el target
-  for (int i = 0; i < node.conections.nextNodes.size(); i++)
+  for (int i = 0; i < node->conections.nextNodes.size(); i++)
   {
     // Los nodos siguiente 
-    nodeAux = closedNodes[closedNodes.size() - 1]->coord + node.conections.nextNodes[i];
+    nodeAux = node->coord + node->conections.nextNodes[i];
 
     if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
       nodeAux.x < world->getTiledMap()->getMapSize().x && nodeAux.y < world->getTiledMap()->getMapSize().y
@@ -85,7 +85,7 @@ void BFS::addConnections(const Node& node)
       // agregamos el nodo a la lista abaierta si es que no esta en ninguna de las 2 listas
       if (false == isInOpenList(nodeAux) && false == isInClosedList(nodeAux))
       {
-        openNodes.push_back(new Node(nodeAux, closedNodes[closedNodes.size() - 1], 0));
+        openNodes.push_back(new Node(nodeAux, node, 0));
       }
     }
   }
@@ -110,7 +110,7 @@ SEARCHING_STATE::E BFS::step()
   }
   else
   {
-    addConnections(*closedNodes[closedNodes.size() - 1]);
+    addConnections(closedNodes[closedNodes.size() - 1]);
     return SEARCHING_STATE::SEARCHING;
   }
 

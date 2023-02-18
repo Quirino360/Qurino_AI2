@@ -64,13 +64,13 @@ uint32 DFS::nextNodeID()
   return (openNodes.size() - 1);
 }
 
-void DFS::addConnections(const Node& node)
+void DFS::addConnections(Node* node)
 {
   Vector2I nodeAux = { 0 , 0 };
   //consigue los siguientes nodos, en caso de no encotrar el target
-  for (int i = 0; i < node.conections.nextNodes.size(); i++)
+  for (int i = 0; i < node->conections.nextNodes.size(); i++)
   {
-    nodeAux = closedNodes[closedNodes.size() - 1]->coord + node.conections.nextNodes[i];
+    nodeAux = node->coord + node->conections.nextNodes[i];
 
     if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
       nodeAux.x < world->getTiledMap()->getMapSize().x && nodeAux.y < world->getTiledMap()->getMapSize().y
@@ -79,7 +79,7 @@ void DFS::addConnections(const Node& node)
       // agregamos el nodo a la lista abaierta si es que no esta
       if (false == isInOpenList(nodeAux) && false == isInClosedList(nodeAux))
       {
-        openNodes.push_back(new Node(nodeAux, closedNodes[closedNodes.size() - 1]));
+        openNodes.push_back(new Node(nodeAux, node));
       }
     }
   }
@@ -105,38 +105,7 @@ SEARCHING_STATE::E DFS::step()
   }
   else
   {
-    addConnections(*closedNodes[closedNodes.size() - 1]);
+    addConnections(closedNodes[closedNodes.size() - 1]);
     return SEARCHING_STATE::SEARCHING;
   }
-
-  /*
-  //el nodo esta vacio
-  if (openNodes.empty())
-  {
-    isFindingTarget = false; // ya no hay nada que buscar
-    return true;
-  }
-  // econtro el nodo
-  else if (openNodes[openNodes.size() -1]->coord == targetCoord)
-  {
-    isFindingTarget = false;
-
-    closedNodes.push_back(openNodes[openNodes.size() - 1]); // agregamos a los nodos cerrados 
-    openNodes.erase(openNodes.begin());// Remove the first element
-
-    return true;
-  }
-  // no es el nodo que buscamos
-  else
-  {
-
-    closedNodes.push_back(openNodes[openNodes.size() - 1]); // agregamos a los nodos cerrados 
-    world->getPathTiledMap()->setType(openNodes[openNodes.size() - 1]->coord.x, openNodes[openNodes.size() - 1]->coord.y, 0);
-
-
-    openNodes.pop_back();// Remove the last element
-
-    return false;
-  }
-  /**/
 }
