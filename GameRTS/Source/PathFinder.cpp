@@ -19,41 +19,52 @@ PathFinder::PathFinder()
 
 }
 
-void PathFinder::update(float deltaTime)
+void PathFinder::Init(RTSWorld* _world, Vector2I& _startCoord, Vector2I& _targetCoord)
 {
+  world = _world;
 
+  startCoord = &_startCoord;
+  targetCoord = &_targetCoord;
+
+  setStartCoord(*startCoord);
+  setTargetCoord(*targetCoord);
 
 }
 
-void PathFinder::setNodes(const Vector2I& _startCoord, const Vector2I& _targetCoord)
+void PathFinder::update(float deltaTime)
 {
-  //nodes are valid coords
-  if (startCoord.x == NULL && startCoord.y == NULL &&
-    targetCoord.x == NULL && targetCoord.y == NULL)
+  // show step by step
+  elapsedFrames += 1;
+
+  if (searchState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
   {
-    isNodesSeted = false;
-    return;
+    searchState = step();
   }
+}
 
-  if (true == isNodesSeted)
+void PathFinder::render()
+{
+  // render
+  if (searchState != SEARCHING_STATE::E::FOUND && elapsedFrames >= stepPerFrames)
   {
-    world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 0);
-    world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 0);
+    for (uint16 i = 0; i < openNodes.size(); i++)
+    {
+      world->getPathTiledMap()->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, 3);
+    }
 
+    for (uint16 i = 0; i < closedNodes.size(); i++)
+    {
+      world->getPathTiledMap()->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, 4);
+    }
+    world->getPathTiledMap()->setType(startCoord->x, startCoord->y, 1);
+    world->getPathTiledMap()->setType(targetCoord->x, targetCoord->y, 2);
+
+    elapsedFrames = 0;
   }
-
-  startCoord = _startCoord;
-  targetCoord = _targetCoord;
-
-  openNodes.clear();
-  
-  auto dist = targetCoord - startCoord;
-  openNodes.push_back(new Node(startCoord, nullptr, dist.size(), 0));
-
-  world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 1);
-  world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 2);
-
-  isNodesSeted = true;
+  else if (searchState == SEARCHING_STATE::E::FOUND && elapsedFrames >= stepPerFrames)
+  {
+    showPath(*targetCoord);
+  }
 }
 
 void PathFinder::showPath(Vector2I _target)
@@ -77,6 +88,26 @@ void PathFinder::showPath(Vector2I _target)
     fatherNodeAux = fatherNodeAux->fatherNode;
   }
 
+}
+
+void PathFinder::setStartCoord(const Vector2I coord)
+{
+  world->getPathTiledMap()->setType(startCoord->x, startCoord->y, 0);
+  *startCoord = coord;
+
+  openNodes.clear();
+  auto dist = *targetCoord - *startCoord;
+  openNodes.push_back(new Node(*startCoord, nullptr, dist.size(), 0));
+}
+
+void PathFinder::setTargetCoord(const Vector2I coord)
+{ 
+  world->getPathTiledMap()->setType(targetCoord->x, targetCoord->y, 0);
+  *targetCoord = coord;
+  
+  openNodes.clear();
+  auto dist = *targetCoord - *startCoord;
+  openNodes.push_back(new Node(*startCoord, nullptr, dist.size(), 0));
 }
 
 // como optimzar, para despues
@@ -110,6 +141,7 @@ void PathFinder::resetPath()
   {
     if (openNodes[i] != nullptr)
     {
+      world->getPathTiledMap()->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, 0);
       delete openNodes[i];
     }
   }
@@ -119,12 +151,13 @@ void PathFinder::resetPath()
   {
     if (closedNodes[i] != nullptr)
     {
+      world->getPathTiledMap()->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, 0);
       delete closedNodes[i];
     }
   }
   closedNodes.clear();
 
-  isNodesSeted = false;
+  searchState = SEARCHING_STATE::NOT_SEARCHING;
 
 }
 

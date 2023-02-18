@@ -3,55 +3,11 @@
 #include "RTSTiledMap.h"
 
 
-void DFS::Init(RTSWorld* _world)
-{
-  world = _world;
 
-  setNodes();
-}
 
 void DFS::update(float deltaTime)
 {
-  elapsedFrames += 1;
-
-  if (searchState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
-  {
-    searchState = step();
-  }
-}
-
-void DFS::render()
-{
-  // render
-  if (searchState == SEARCHING_STATE::E::SEARCHING && elapsedFrames >= stepPerFrames)
-  {
-    for (uint16 i = 0; i < openNodes.size(); i++)
-    {
-      world->getPathTiledMap()->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, 3);
-    }
-
-    for (uint16 i = 0; i < closedNodes.size(); i++)
-    {
-      world->getPathTiledMap()->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, 4);
-    }
-
-    world->getPathTiledMap()->setType(startCoord.x, startCoord.y, 1);
-    world->getPathTiledMap()->setType(targetCoord.x, targetCoord.y, 2);
-    elapsedFrames = 0;
-  }
-  else if (searchState == SEARCHING_STATE::E::FOUND && elapsedFrames >= stepPerFrames)
-  {
-    showPath(targetCoord);
-  }
-}
-
-void DFS::run()
-{
-  if (false == isNodesSeted)
-  {
-    setNodes();
-  }
-  //openNodes.push_back(new Node(startCoord, nullptr));
+  DFS::PathFinder::update(deltaTime);
 
 }
 
@@ -70,7 +26,7 @@ void DFS::addConnections(Node* node)
 
     if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
       nodeAux.x < world->getTiledMap()->getMapSize().x && nodeAux.y < world->getTiledMap()->getMapSize().y
-      && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) != 3)
+      && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) == 1)
     {
       // agregamos el nodo a la lista abaierta si es que no esta
       if (nullptr == getNodeInOpenList(nodeAux) && nullptr == getNodeInClosedList(nodeAux))
@@ -90,12 +46,15 @@ SEARCHING_STATE::E DFS::step()
     return SEARCHING_STATE::NOT_FOUND;
   }
 
-  closedNodes.push_back(openNodes[nextNodeID()]); // agregamos a los nodos cerrados 
-  openNodes.pop_back(); // Remove the last element
+  uint32 nodeID = nextNodeID();
+  closedNodes.push_back(openNodes[nodeID]); // agregamos a los nodos cerrados 
+  openNodes.erase(openNodes.begin() + int(nodeID));// Remove the first element
+
+  //openNodes.pop_back(); // Remove the last element
   //openNodes.erase(openNodes.begin());// Remove the first element
 
 
-  if (closedNodes[closedNodes.size() - 1]->coord == targetCoord)
+  if (closedNodes[closedNodes.size() - 1]->coord == *targetCoord)
   {
     return SEARCHING_STATE::FOUND;
   }

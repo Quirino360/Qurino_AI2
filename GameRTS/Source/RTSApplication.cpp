@@ -261,15 +261,22 @@ RTSApplication::postInit() {
   m_gameWorld.updateResolutionData();
 
   // PathFinder
+  m_start = { 0, 0 };
+  m_goal = { 10, 10 };
 
-  m_bfs.Init(&m_gameWorld);
-  m_dfs.Init(&m_gameWorld);
-  m_best.Init(&m_gameWorld);
-  m_dijkstra.Init(&m_gameWorld);
-  m_aStar.Init(&m_gameWorld);
-  
+  m_bfs.Init(&m_gameWorld, m_start, m_goal);
+  m_dfs.Init(&m_gameWorld, m_start, m_goal);
+  m_best.Init(&m_gameWorld, m_start, m_goal);
+  m_dijkstra.Init(&m_gameWorld, m_start, m_goal);
+  m_aStar.Init(&m_gameWorld, m_start, m_goal);
+
+  m_UI.start[0] = m_start.x;
+  m_UI.start[1] = m_start.y;
+
+  m_UI.goal[0] = m_goal.x;
+  m_UI.goal[1] = m_goal.y;  
+
   pFinder = &m_bfs;
-
 
 }
 
@@ -358,42 +365,40 @@ mainMenu(RTSApplication* pApp) {
 
 }
 
-static int start[] = { 0 ,0 };
-static int goal[] = {10 ,10};
-static int pathType = 1;
-string pathTypeName = "BFS";
+
+
 void
 PathFindingMenu(RTSApplication* pApp)
 {
   ImGui::Begin("PathFindingMenu");
   {
-    
+    UserInterface* UI = &pApp->m_UI;
     ImGui::Text("Selelct Path Type");
-    if (ImGui::SliderInt(pathTypeName.c_str(), &pathType, 1, 5))
+    if (ImGui::SliderInt(UI->pathTypeName.c_str(), &UI->pathType, 1, 5))
     {
-      if (1 == pathType)
+      if (1 == UI->pathType)
       {
-        pathTypeName = "BREADTH FIRST SEARCH";
+        UI->pathTypeName = "BREADTH FIRST SEARCH";
         pApp->setPathFinder(pApp->m_bfs);
       }
-      else if (2 == pathType)
+      else if (2 == UI->pathType)
       {
-        pathTypeName = "DEPTH FIRST SEARCH";
+        UI->pathTypeName = "DEPTH FIRST SEARCH";
         pApp->setPathFinder(pApp->m_dfs);
       }
-      else if (3 == pathType)
+      else if (3 == UI->pathType)
       {
-        pathTypeName = "BEST";
+        UI->pathTypeName = "BEST";
         pApp->setPathFinder(pApp->m_best);
       }
-      else if (4 == pathType)
+      else if (4 == UI->pathType)
       {
-        pathTypeName = "DIJKSTRA";
+        UI->pathTypeName = "DIJKSTRA";
         pApp->setPathFinder(pApp->m_dijkstra);
       }
-      else if (5 == pathType)
+      else if (5 == UI->pathType)
       {
-        pathTypeName = "ASTAR";
+        UI->pathTypeName = "ASTAR";
         pApp->setPathFinder(pApp->m_aStar);
       }
     }
@@ -404,16 +409,24 @@ PathFindingMenu(RTSApplication* pApp)
     {
       pApp->getPathFinder()->startSearching();
     }
-
-    if (ImGui::InputInt2("Start position", start))
+    if (ImGui::Button("Stop Search"))
     {
-      pApp->getPathFinder()->setNodes({ start[0], start[1] }, 
-        { goal[0], goal[1] });
+      pApp->getPathFinder()->stopSearching();
     }
-    if (ImGui::InputInt2("Goal position", goal))
+    if (ImGui::Button("Reset Search"))
     {
-      pApp->getPathFinder()->setNodes({ start[0], start[1] }, 
-        { goal[0], goal[1] });
+      pApp->getPathFinder()->stopSearching();
+      pApp->getPathFinder()->resetPath();
+    }
+
+    if(ImGui::InputInt2("Start position", UI->start))
+    {
+      pApp->pFinder->setStartCoord({ UI->start[0], UI->start[1] });
+    }
+    if (ImGui::InputInt2("Goal position", UI->goal))
+    {
+      pApp->pFinder->setTargetCoord({ UI->goal[0], UI->goal[1] });
+
     }
     
   }

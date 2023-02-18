@@ -139,7 +139,6 @@ public:
 };
 
 
-
 //textureNames = {"Untiled", "Start", "Target", "OpenList", "ClosedList" };
 
 class PathFinder
@@ -149,32 +148,40 @@ public:
   ~PathFinder() = default;
 
   virtual void
-  Init(RTSWorld* _world) = 0;
+  Init(RTSWorld* _world, Vector2I& _startCoord, Vector2I& _targetCoord);
 
   virtual void
   update(float deltaTime);
 
   virtual void
-  render() = 0;
-
-public:
+  render();
   
-  virtual void
-  setNodes(const Vector2I& _startCoord = Vector2I(0, 0),
-  const Vector2I& _targetCoord = Vector2I(10, 10));
-
   void 
   showPath(Vector2I _target);
 
-  void 
+  void
+  setStartCoord(const Vector2I coord);
+
+  void
+  setTargetCoord(const Vector2I coord);
+
+  inline void 
   startSearching() {
     searchState = SEARCHING_STATE::SEARCHING;
   }
 
+  inline void 
+  stopSearching() {
+  searchState = SEARCHING_STATE::NOT_SEARCHING;
+  }
+
+  void
+  resetPath();
+
 protected:
   // main algorithm
   virtual void
-  run() = 0;
+  run() {};
 
   // search for new nodes and 
   virtual SEARCHING_STATE::E
@@ -190,8 +197,7 @@ protected:
 
   Node* getNodeInOpenList(Vector2I _target);
 
-  virtual void
-  resetPath();
+
 
 protected:
   RTSWorld* world;
@@ -200,9 +206,9 @@ protected:
 
   geEngineSDK::Vector<Node*> closedNodes;
 
-  Vector2I startCoord;
+  Vector2I* startCoord = nullptr;
 
-  Vector2I targetCoord;
+  Vector2I* targetCoord = nullptr;
 
   float stepPerFrames = 1;
 
@@ -210,8 +216,12 @@ protected:
 
   bool isNodesSeted = false;
 
+
   SEARCHING_STATE::E searchState = SEARCHING_STATE::NOT_SEARCHING;
 };
+
+
+
 
 
 //5 PathFinders

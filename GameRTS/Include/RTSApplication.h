@@ -18,6 +18,16 @@ namespace sf{
   class Font;
 }
 
+
+struct UserInterface
+{
+  int start[2] = { 0 ,0 };
+  int goal[2] = { 10 ,10 };
+  int pathType = 1;
+  string pathTypeName = "BFS";
+};
+
+
 class RTSApplication
 {
 public:
@@ -86,6 +96,10 @@ public:
   Dijkstra m_dijkstra;
   Astar m_aStar;
 
+  Vector2I m_start = { 0, 0 };
+  Vector2I m_goal = { 10, 10 };
+  
+  UserInterface m_UI;
 
 private:
   sf::RenderWindow* m_window;
@@ -99,6 +113,7 @@ private:
   float m_fpsTimer;
   float m_fpsCounter;
   float m_framesPerSecond;
+
 
 
 
