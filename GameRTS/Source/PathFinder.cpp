@@ -159,6 +159,8 @@ void PathFinder::resetPath()
 
   searchState = SEARCHING_STATE::NOT_SEARCHING;
 
+  setStartCoord(*startCoord);
+  setTargetCoord(*targetCoord);
 }
 
 

@@ -37,6 +37,9 @@ mainMenu(RTSApplication* pApp);
 void
 PathFindingMenu(RTSApplication* pApp);
 
+void
+EditorMenu(RTSApplication* pApp);
+
 RTSApplication::RTSApplication()
   : m_window(nullptr),
     m_fpsTimer(0.0f),
@@ -171,6 +174,8 @@ RTSApplication::updateFrame() {
 
   PathFindingMenu(this);
 
+  EditorMenu(this);
+
   //Check for camera movement
   Vector2 axisMovement(FORCE_INIT::kForceInitToZero);
   Vector2I mousePosition;
@@ -221,6 +226,20 @@ RTSApplication::updateFrame() {
 
   
   //mousePosition
+  if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+  {
+    int xx, yy = 0;
+    int tileX, tileY = 0;
+    m_gameWorld.getTiledMap()->getMapToScreenCoords(0, 0, xx, yy);
+    m_gameWorld.getTiledMap()->getScreenToMapCoords(mousePosition.x, mousePosition.y, tileX, tileY);
+     
+    std::cout << "mousePos -> x = " << mousePosition.x << ", y = " << mousePosition.y << std::endl;
+    std::cout << "TilePos  -> x = " << xx << ", y = " << yy << std::endl;
+    std::cout << "Tile     -> x = " << tileX << ", y = " << tileY << std::endl;
+
+    m_gameWorld.getTiledMap()->setType(tileX, tileY, m_UI.tileType);
+
+  }
 
   //m_gameWorld.getTiledMap()->setColor(1,1, 252, 3, 3);
 
@@ -251,7 +270,7 @@ RTSApplication::renderFrame() {
   text.setFillColor(sf::Color::Red);
   text.setString( toString(1.0f/g_time().getFrameDelta()).c_str() );
   m_window->draw(text);
-  */
+  /**/
   m_window->display();
 }
 
@@ -374,31 +393,31 @@ PathFindingMenu(RTSApplication* pApp)
   {
     UserInterface* UI = &pApp->m_UI;
     ImGui::Text("Selelct Path Type");
-    if (ImGui::SliderInt(UI->pathTypeName.c_str(), &UI->pathType, 1, 5))
+    if (ImGui::SliderInt(UI->searchName.c_str(), &UI->searchType, 1, 5))
     {
-      if (1 == UI->pathType)
+      if (1 == UI->searchType)
       {
-        UI->pathTypeName = "BREADTH FIRST SEARCH";
+        UI->searchName = "BREADTH FIRST SEARCH";
         pApp->setPathFinder(pApp->m_bfs);
       }
-      else if (2 == UI->pathType)
+      else if (2 == UI->searchType)
       {
-        UI->pathTypeName = "DEPTH FIRST SEARCH";
+        UI->searchName = "DEPTH FIRST SEARCH";
         pApp->setPathFinder(pApp->m_dfs);
       }
-      else if (3 == UI->pathType)
+      else if (3 == UI->searchType)
       {
-        UI->pathTypeName = "BEST";
+        UI->searchName = "BEST";
         pApp->setPathFinder(pApp->m_best);
       }
-      else if (4 == UI->pathType)
+      else if (4 == UI->searchType)
       {
-        UI->pathTypeName = "DIJKSTRA";
+        UI->searchName = "DIJKSTRA";
         pApp->setPathFinder(pApp->m_dijkstra);
       }
-      else if (5 == UI->pathType)
+      else if (5 == UI->searchType)
       {
-        UI->pathTypeName = "ASTAR";
+        UI->searchName = "ASTAR";
         pApp->setPathFinder(pApp->m_aStar);
       }
     }
@@ -428,7 +447,39 @@ PathFindingMenu(RTSApplication* pApp)
       pApp->pFinder->setTargetCoord({ UI->goal[0], UI->goal[1] });
 
     }
-    
+
+    // ----------------- //
+    ImGui::Spacing(); ImGui::Separator(); ImGui::Spacing();
+  }
+  ImGui::End();
+}
+
+void
+EditorMenu(RTSApplication* pApp)
+{
+  ImGui::Begin("EditorMenu");
+  {
+    UserInterface* UI = &pApp->m_UI;
+    ImGui::Text("Selelct Path Type");
+    if (ImGui::SliderInt(UI->tileTypeName.c_str(), &UI->tileType, 0, 3))
+    {
+      if (0 == UI->tileType)
+      {
+        UI->tileTypeName = "WATER";
+      }
+      else if (1 == UI->tileType)
+      {
+        UI->tileTypeName = "GRASS";
+      }
+      else if (2 == UI->tileType)
+      {
+        UI->tileTypeName = "MARSH";
+      }
+      else if (3 == UI->tileType)
+      {
+        UI->tileTypeName = "OBSTACLE";
+      }
+    }
   }
   ImGui::End();
 }

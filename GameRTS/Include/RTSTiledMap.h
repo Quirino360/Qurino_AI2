@@ -110,6 +110,9 @@ class RTSTiledMap
   void
   setCost(const int32 x, const int32 y, const int8 cost);
 
+  void setTypeAndCost(const int32 x, const int32 y);
+
+
   int8
   getType(const int32 x, const int32 y) const;
 

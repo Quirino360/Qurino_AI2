@@ -23,8 +23,11 @@ struct UserInterface
 {
   int start[2] = { 0 ,0 };
   int goal[2] = { 10 ,10 };
-  int pathType = 1;
-  string pathTypeName = "BFS";
+  int searchType = 1;
+  string searchName = "BFS";
+
+  int tileType = 0;
+  string tileTypeName = "Water";
 };
 
 
@@ -105,17 +108,10 @@ private:
   sf::RenderWindow* m_window;
   sf::Font* m_arialFont;
   RTSWorld m_gameWorld;
-  //DFS m_dfs;
-
-
-
 
   float m_fpsTimer;
   float m_fpsCounter;
   float m_framesPerSecond;
-
-
-
 
 };
 

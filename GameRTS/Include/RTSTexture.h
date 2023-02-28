@@ -36,6 +36,12 @@ class RTSTexture
     return m_texture->getSize().y;
   }
 
+  Vector2
+  getPosition()
+  {
+    return Vector2(m_sprite->getPosition().x, m_sprite->getPosition().y);
+  }
+
   void
   setColor(uint8 red, uint8 green = 255, uint8 blue = 255, uint8 alpha = 255) {
     GE_ASSERT(m_sprite);
