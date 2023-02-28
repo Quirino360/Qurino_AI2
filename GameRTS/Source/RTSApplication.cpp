@@ -237,7 +237,7 @@ RTSApplication::updateFrame() {
     std::cout << "TilePos  -> x = " << xx << ", y = " << yy << std::endl;
     std::cout << "Tile     -> x = " << tileX << ", y = " << tileY << std::endl;
 
-    m_gameWorld.getTiledMap()->setType(tileX, tileY, m_UI.tileType);
+    m_gameWorld.getTiledMap()->setType(tileX, tileY, m_UI.tileTypeID);
 
   }
 
@@ -296,6 +296,8 @@ RTSApplication::postInit() {
   m_UI.goal[1] = m_goal.y;  
 
   pFinder = &m_bfs;
+
+  a.loadFromFile("C:/Users/angel/Documents/School/Github/Qurino_AI2/Bin/Textures/Terrain/terrain_Grass.png");
 
 }
 
@@ -393,33 +395,45 @@ PathFindingMenu(RTSApplication* pApp)
   {
     UserInterface* UI = &pApp->m_UI;
     ImGui::Text("Selelct Path Type");
-    if (ImGui::SliderInt(UI->searchName.c_str(), &UI->searchType, 1, 5))
+
+    if (ImGui::BeginCombo("SEARCH TYPE", UI->currentSearchType.c_str() ))
     {
-      if (1 == UI->searchType)
+      for (int i = 0; i < 5; i++)
       {
-        UI->searchName = "BREADTH FIRST SEARCH";
+        bool is_selected = (UI->currentSearchType == UI->searchType[i]);
+        if (ImGui::Selectable(UI->searchType[i].c_str(), is_selected))
+        {
+          UI->currentSearchType = UI->searchType[i];
+
+        }
+        if (is_selected)
+        {
+           ImGui::SetItemDefaultFocus();
+        }
+      }
+      
+      if (UI->currentSearchType == UI->searchType[0])
+      {
         pApp->setPathFinder(pApp->m_bfs);
       }
-      else if (2 == UI->searchType)
+      else if (UI->currentSearchType == UI->searchType[1])
       {
-        UI->searchName = "DEPTH FIRST SEARCH";
         pApp->setPathFinder(pApp->m_dfs);
       }
-      else if (3 == UI->searchType)
+      else if (UI->currentSearchType == UI->searchType[2])
       {
-        UI->searchName = "BEST";
         pApp->setPathFinder(pApp->m_best);
       }
-      else if (4 == UI->searchType)
+      else if (UI->currentSearchType == UI->searchType[3])
       {
-        UI->searchName = "DIJKSTRA";
         pApp->setPathFinder(pApp->m_dijkstra);
       }
-      else if (5 == UI->searchType)
+      else if (UI->currentSearchType == UI->searchType[4])
       {
-        UI->searchName = "ASTAR";
         pApp->setPathFinder(pApp->m_aStar);
       }
+
+      ImGui::EndCombo();
     }
 
     // ----------------- //
@@ -461,25 +475,51 @@ EditorMenu(RTSApplication* pApp)
   {
     UserInterface* UI = &pApp->m_UI;
     ImGui::Text("Selelct Path Type");
-    if (ImGui::SliderInt(UI->tileTypeName.c_str(), &UI->tileType, 0, 3))
+
+
+
+    if (ImGui::BeginCombo("SEARCH TYPE", UI->currentTileType.c_str(), ImGuiComboFlags_::ImGuiComboFlags_PopupAlignLeft))
     {
-      if (0 == UI->tileType)
+      for (int i = 0; i < 4; i++)
       {
-        UI->tileTypeName = "WATER";
+        ImGui::Image(pApp->a, ImVec2(10, 10));
+        ImGui::SameLine();
+        bool is_selected = (UI->currentTileType == UI->tileType[i]);
+        if (ImGui::Selectable(UI->tileType[i].c_str(), is_selected,ImGuiSelectableFlags_::ImGuiSelectableFlags_AllowDoubleClick))
+        {
+
+          UI->currentTileType = UI->tileType[i];
+
+        }
+
+        if (is_selected)
+        {
+          //ImGui::SetItemDefaultFocus();
+        }
       }
-      else if (1 == UI->tileType)
+
+      if (UI->currentTileType == UI->tileType[0])
       {
-        UI->tileTypeName = "GRASS";
+        UI->tileTypeID = 0;
       }
-      else if (2 == UI->tileType)
+      else if (UI->currentTileType == UI->tileType[1])
       {
-        UI->tileTypeName = "MARSH";
+        UI->tileTypeID = 1;
       }
-      else if (3 == UI->tileType)
+      else if (UI->currentTileType == UI->tileType[2])
       {
-        UI->tileTypeName = "OBSTACLE";
+        UI->tileTypeID = 2;
       }
+      else if (UI->currentTileType == UI->tileType[3])
+      {
+        UI->tileTypeID = 3;
+      }
+
+      ImGui::EndCombo();
     }
+
+    ImGui::Text("Current shit = ");
+    ImGui::Image(pApp->a, ImVec2(75, 75));
   }
   ImGui::End();
 }

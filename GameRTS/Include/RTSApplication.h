@@ -23,11 +23,13 @@ struct UserInterface
 {
   int start[2] = { 0 ,0 };
   int goal[2] = { 10 ,10 };
-  int searchType = 1;
-  string searchName = "BFS";
+  string currentSearchType = "BREADTH FIRST SEARCH";
+  string searchType[5] = { "BREADTH FIRST SEARCH",  "DEPTH FIRST SEARCH" , "BEST", "DIJKSTRA", "ASTAR" };
 
-  int tileType = 0;
-  string tileTypeName = "Water";
+  string currentTileType = "WATER";
+  string tileType[4] = { "WATER", "GRASS", "MARSH", "OBSTACLE" };
+  int tileTypeID = 0;
+
 };
 
 
@@ -104,6 +106,7 @@ public:
   
   UserInterface m_UI;
 
+  sf::Texture a;
 private:
   sf::RenderWindow* m_window;
   sf::Font* m_arialFont;
@@ -112,6 +115,7 @@ private:
   float m_fpsTimer;
   float m_fpsCounter;
   float m_framesPerSecond;
+
 
 };
 
