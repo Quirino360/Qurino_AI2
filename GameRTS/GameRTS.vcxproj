@@ -182,8 +182,10 @@
     <ClCompile Include="Source\PathFindingMap.cpp" />
     <ClCompile Include="Source\RTSApplication.cpp" />
     <ClCompile Include="Source\RTSConfig.cpp" />
+    <ClCompile Include="Source\RTSPathMap.cpp" />
     <ClCompile Include="Source\RTSTexture.cpp" />
     <ClCompile Include="Source\RTSTiledMap.cpp" />
+    <ClCompile Include="Source\RTSGameMap.cpp" />
     <ClCompile Include="Source\RTSUnitType.cpp" />
     <ClCompile Include="Source\RTSWorld.cpp" />
   </ItemGroup>
@@ -204,8 +206,10 @@
     <ClInclude Include="Include\PathFindingMap.h" />
     <ClInclude Include="Include\RTSApplication.h" />
     <ClInclude Include="Include\RTSConfig.h" />
+    <ClInclude Include="Include\RTSPathMap.h" />
     <ClInclude Include="Include\RTSTexture.h" />
     <ClInclude Include="Include\RTSTiledMap.h" />
+    <ClInclude Include="Include\RTSGameMap.h" />
     <ClInclude Include="Include\RTSUnitType.h" />
     <ClInclude Include="Include\RTSWorld.h" />
   </ItemGroup>

@@ -23,6 +23,8 @@
 #include "RTSConfig.h"
 #include "RTSApplication.h"
 #include "RTSTiledMap.h"
+#include "RTSPathMap.h"
+#include "RTSGameMap.h"
 
 #include "BFS.h"
 #include "DFS.h"
@@ -221,7 +223,7 @@ RTSApplication::updateFrame() {
 
   axisMovement *= GameOptions::s_MapMovementSpeed * deltaTime;
 
-  m_gameWorld.getTiledMap()->moveCamera(axisMovement.x, axisMovement.y);
+  m_gameWorld.getGameMap()->moveCamera(axisMovement.x, axisMovement.y);
   m_gameWorld.getPathTiledMap()->moveCamera(axisMovement.x, axisMovement.y);
 
   
@@ -230,18 +232,18 @@ RTSApplication::updateFrame() {
   {
     int xx, yy = 0;
     int tileX, tileY = 0;
-    m_gameWorld.getTiledMap()->getMapToScreenCoords(0, 0, xx, yy);
-    m_gameWorld.getTiledMap()->getScreenToMapCoords(mousePosition.x, mousePosition.y, tileX, tileY);
+    m_gameWorld.getGameMap()->getMapToScreenCoords(0, 0, xx, yy);
+    m_gameWorld.getGameMap()->getScreenToMapCoords(mousePosition.x, mousePosition.y, tileX, tileY);
      
     std::cout << "mousePos -> x = " << mousePosition.x << ", y = " << mousePosition.y << std::endl;
     std::cout << "TilePos  -> x = " << xx << ", y = " << yy << std::endl;
     std::cout << "Tile     -> x = " << tileX << ", y = " << tileY << std::endl;
 
-    m_gameWorld.getTiledMap()->setType(tileX, tileY, m_UI.tileTypeID);
+    m_gameWorld.getGameMap()->setType(tileX, tileY, m_UI.tileTypeID);
 
   }
 
-  //m_gameWorld.getTiledMap()->setColor(1,1, 252, 3, 3);
+  //m_gameWorld.getGameMap()->setColor(1,1, 252, 3, 3);
 
   //Update the world
   m_gameWorld.update(deltaTime);
@@ -337,7 +339,7 @@ loadMapFromFile(RTSApplication* pApp) {
   SetCurrentDirectoryW(UTF8::toWide(currentDirectory.toString()).c_str());
 
   if (bMustLoad) {
-    pApp->getWorld()->getTiledMap()->loadFromImageFile(pApp->getRenderWindow(),
+    pApp->getWorld()->getGameMap()->loadFromImageFile(pApp->getRenderWindow(),
                                                        toString(fileName));
   }
 }
@@ -393,6 +395,12 @@ PathFindingMenu(RTSApplication* pApp)
 {
   ImGui::Begin("PathFindingMenu");
   {
+    Vector2I cMapSize = pApp->getWorld()->getGameMap()->getMapSize();
+    string displayMapSize = "Game map Size x = " + to_string(cMapSize.x) + ", y = " + to_string(cMapSize.y);
+    ImGui::Text(displayMapSize.c_str());
+    //ImGui::Text("Selelct Path Type");
+
+
     UserInterface* UI = &pApp->m_UI;
     ImGui::Text("Selelct Path Type");
 

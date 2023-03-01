@@ -12,39 +12,18 @@ using namespace geEngineSDK;
 
 class RTSTexture;
 
-/*
-namespace TERRAIN_TYPE {
-  enum E {
-    kWater = 0,
-    kGrass,
-    kMarsh,
-    kObstacle,
-    kNumObjects
-  };
-}
-
-namespace PathType {
-  enum E {
-    kUntiled = 0,
-    kStart,
-    kTarget,
-    kOpenList,
-    kClosedList,
-    Path
-  };
-}/**/
-
 // This uses the RTSConfig Class
 class RTSTiledMap
 {
-    //namespacing, objeto que solo se usa aqui
+protected:
+  //namespacing, objeto que solo se usa aqui
   class MapTile
   {
-   public:
+  public:
     MapTile();
     MapTile(const int8 idType, const int8 cost);
     MapTile(const MapTile& copy);
-    
+
     MapTile&
     operator=(const MapTile& rhs);
 
@@ -68,28 +47,29 @@ class RTSTiledMap
       m_cost = cost;
     }
 
-   private:
+  private:
     uint8 m_idType;
     int8 m_cost;
   };
 
- public:
+public:
   RTSTiledMap();
   RTSTiledMap(sf::RenderTarget* pTarget, const Vector2I& mapSize);
   ~RTSTiledMap();
 
- public:
-  bool
+protected:
+  virtual bool
   init(sf::RenderTarget* pTarget, const Vector2I& mapSize,
-  String  _textureRoute = "Textures/Terrain",
-  Vector<String> _texturesNames = Vector<String>());
+    String  _textureRoute = "Textures/Terrain",
+    Vector<String> _texturesNames = Vector<String>()) { return false; };
 
+public:
   void
   destroy();
 
   void
   update(float deltaTime);
-  
+
   void
   render();
 
@@ -98,29 +78,16 @@ class RTSTiledMap
     return m_mapSize;
   }
 
-  bool
-  loadFromImageFile(sf::RenderTarget* pTarget, String fileName);
-
-  bool
-  saveToImageFile(sf::RenderTarget* pTarget, String fileName);
-
-  int8
-  getCost(const int32 x, const int32 y) const;
-
-  void
-  setCost(const int32 x, const int32 y, const int8 cost);
-
-  void setTypeAndCost(const int32 x, const int32 y);
 
 
   int8
   getType(const int32 x, const int32 y) const;
 
   void
-  setMapType(const uint8 type);
+  setType(const int32 x, const int32 y, const uint8 idtype);
 
   void
-  setType(const int32 x, const int32 y, const uint8 idtype);
+  setMapType(const uint8 type);
 
   void
   setStart(const uint32 x, const uint32 y) {
@@ -130,7 +97,7 @@ class RTSTiledMap
   }
 
   void
-  getStart(uint32 &x, uint32 &y) const {
+  getStart(uint32& x, uint32& y) const {
     x = m_scrStart.x;
     y = m_scrStart.y;
   }
@@ -143,13 +110,13 @@ class RTSTiledMap
   }
 
   void
-  getEnd(uint32 &x, uint32 &y) const {
+  getEnd(uint32& x, uint32& y) const {
     x = m_scrEnd.x;
     y = m_scrEnd.y;
   }
 
   void
-  preCalc() {
+    preCalc() {
     m_PreCalc_MidResolution = (m_scrEnd - m_scrStart) / 2;
 #ifdef MAP_IS_ISOMETRIC
     m_PreCalc_MaxCameraCoord.x = m_mapSize.x * GameOptions::TILEHALFSIZE.x;
@@ -166,33 +133,28 @@ class RTSTiledMap
   setCameraStartPosition(const int32 x, const int32 y);
 
   void
-  getCameraStartPosition(int32 &x, int32 &y) const {
+  getCameraStartPosition(int32& x, int32& y) const {
     x = m_iCamera.x;
     y = m_iCamera.y;
   }
 
   void
   getScreenToMapCoords(const int32 scrX,
-                       const int32 scrY,
-                       int32 &mapX,
-                       int32 &mapY);
+    const int32 scrY,
+    int32& mapX,
+    int32& mapY);
 
   void
   getMapToScreenCoords(const int32 mapX,
-                       const int32 mapY,
-                       int32 &scrX,
-                       int32 &scrY);
+    const int32 mapY,
+    int32& scrX,
+    int32& scrY);
 
   /*/void
   setColor(const uint8& x, const uint8& y,
     uint8 red, uint8 green = 255, uint8 blue = 255, uint8 alpha = 255);/**/
 
- private:
-
-   String textureRoute;
-   //String textureRoute = "Textures/PathType";
-
-  Vector<String> textureNames;
+protected:
 
   Vector2I m_mapSize;
   Vector<MapTile> m_mapGrid; // "The map"

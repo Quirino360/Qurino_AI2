@@ -1,6 +1,7 @@
 #include "Dijkstra.h"
 #include "RTSWorld.h"
 #include "RTSTiledMap.h"
+#include "RTSGameMap.h"
 
 
 void Dijkstra::update(float deltaTime)
@@ -43,11 +44,11 @@ void Dijkstra::addConnections(Node* node)
 
     // si esta adentro del mapa y su tipo no es obstaculo
     if (coordAux.x >= 0 && coordAux.y >= 0 &&
-      coordAux.x < world->getTiledMap()->getMapSize().x && coordAux.y < world->getTiledMap()->getMapSize().y
-      && world->getTiledMap()->getType(coordAux.x, coordAux.y) == 1)
+      coordAux.x < world->getGameMap()->getMapSize().x && coordAux.y < world->getGameMap()->getMapSize().y
+      && world->getGameMap()->getType(coordAux.x, coordAux.y) == 1)
     {
       
-      weightAux = world->getTiledMap()->getCost(coordAux.x, coordAux.y) + node->weight;
+      weightAux = world->getGameMap()->getCost(coordAux.x, coordAux.y) + node->weight;
 
       Node* nodeInClosedList = getNodeInClosedList(coordAux);
       if (nullptr != nodeInClosedList)

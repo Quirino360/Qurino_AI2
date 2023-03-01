@@ -2,6 +2,8 @@
 
 #include "RTSWorld.h"
 #include "RTSTiledMap.h"
+#include "RTSPathMap.h"
+#include "RTSGameMap.h"
 
  const Vector2I Node::Conections::TOP = Vector2I(0, -1);
  const Vector2I Node::Conections::TOPRIGHT = Vector2I(1, -1);

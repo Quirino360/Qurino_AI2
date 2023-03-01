@@ -71,6 +71,12 @@
     <ClCompile Include="Source\PathFindingMap.cpp">
       <Filter>Source Files\PathFinder</Filter>
     </ClCompile>
+    <ClCompile Include="Source\RTSGameMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\RTSPathMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\RTSUnitType.h">
@@ -132,6 +138,12 @@
     </ClInclude>
     <ClInclude Include="Include\PathFindingMap.h">
       <Filter>Source Files\PathFinder</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RTSGameMap.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\RTSPathMap.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

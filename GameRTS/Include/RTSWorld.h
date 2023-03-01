@@ -5,9 +5,13 @@
 
 #include <SFML/Graphics.hpp>
 
+//#include "PathFinder.h"
+
 using namespace geEngineSDK;
 
-class RTSTiledMap;
+class RTSGameMap;
+class RTSPathMap;
+
 class RTSMapGridWalker;
 
 class RTSWorld
@@ -29,13 +33,13 @@ class RTSWorld
   void
   render();
 
-  RTSTiledMap*
-  getTiledMap() {
+  RTSGameMap*
+  getGameMap() {
     return m_pTiledMap;
   }
 
-  RTSTiledMap*
-    getPathTiledMap() {
+  RTSPathMap*
+  getPathTiledMap() {
     return m_pathMap;
   }
 
@@ -46,8 +50,8 @@ class RTSWorld
   setCurrentWalker(const int8 index);
 
  private:
-   RTSTiledMap* m_pTiledMap; // The map
-   RTSTiledMap* m_pathMap; // The map
+   RTSGameMap* m_pTiledMap; // The map
+   RTSPathMap* m_pathMap; // The map
 
   //List<RTSUnitType*> m_lstUnitTypes;
   //List<RTSUnit*> m_lstUnits;

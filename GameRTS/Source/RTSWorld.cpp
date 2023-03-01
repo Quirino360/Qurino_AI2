@@ -4,6 +4,10 @@
 #include "RTSUnitType.h"
 //#include "RTSConfig.h"
 
+#include "RTSTiledMap.h"
+#include "RTSGameMap.h"
+#include "RTSPathMap.h"
+
 
 RTSWorld::RTSWorld() {
   m_pTiledMap = nullptr;
@@ -26,11 +30,11 @@ RTSWorld::init(sf::RenderTarget* pTarget) {
   m_pTarget = pTarget;
 
   //Initialize the map (right now it's an empty map)
-  m_pTiledMap = ge_new<RTSTiledMap>();
+  m_pTiledMap = ge_new<RTSGameMap>();
   GE_ASSERT(m_pTiledMap);
   m_pTiledMap->init(m_pTarget, Vector2I(256, 256));
 
-  m_pathMap  = ge_new<RTSTiledMap>();
+  m_pathMap  = ge_new<RTSPathMap>();
   GE_ASSERT(m_pathMap);
   m_pathMap->init(m_pTarget, Vector2I(256, 256), "Textures/PathType", 
   {"Untiled", "Start", "Target", "OpenList", "ClosedList", "Path"});
@@ -51,22 +55,11 @@ RTSWorld::init(sf::RenderTarget* pTarget) {
   m_pTiledMap->setMapType(1);
   m_pathMap->setMapType(0);
 
-  /*uint32 randNum;
-  randNum = 0;
-  for (uint32 i = 0; i < m_pTiledMap->getMapSize().x; i++)
-  {
-    for (uint32 j = 0; j < m_pTiledMap->getMapSize().y; j++)
-    {
-      randNum = rand() % 10; // range 0 to 99
-      m_pTiledMap->setCost(i, j, randNum);
-    }
-  }/**/
-
   for (uint32 i = 1; i < 9; i++)
   {
     for (uint32 j = 1; j < 9; j++)
     {
-      getTiledMap()->setType(i, j, 0);
+      getGameMap()->setType(i, j, 0);
     }
   }
 

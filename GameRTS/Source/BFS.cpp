@@ -1,6 +1,7 @@
 #include "BFS.h"
 #include "RTSWorld.h"
 #include "RTSTiledMap.h"
+#include "RTSGameMap.h"
 
 
 
@@ -26,8 +27,8 @@ void BFS::addConnections(Node* node)
     nodeAux = node->coord + node->conections.nextNodes[i];
 
     if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
-      nodeAux.x < world->getTiledMap()->getMapSize().x && nodeAux.y < world->getTiledMap()->getMapSize().y
-      && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) == 1) //cambiar a constantes
+      nodeAux.x < world->getGameMap()->getMapSize().x && nodeAux.y < world->getGameMap()->getMapSize().y
+      && world->getGameMap()->getType(nodeAux.x, nodeAux.y) == 1) //cambiar a constantes
     {
       // agregamos el nodo a la lista abaierta si es que no esta en ninguna de las 2 listas
       if (nullptr == getNodeInOpenList(nodeAux) && nullptr == getNodeInClosedList(nodeAux))

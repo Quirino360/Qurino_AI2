@@ -1,6 +1,7 @@
 #include "DFS.h"
 #include "RTSWorld.h"
 #include "RTSTiledMap.h"
+#include "RTSGameMap.h"
 
 
 
@@ -25,8 +26,8 @@ void DFS::addConnections(Node* node)
     nodeAux = node->coord + node->conections.nextNodes[i];
 
     if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
-      nodeAux.x < world->getTiledMap()->getMapSize().x && nodeAux.y < world->getTiledMap()->getMapSize().y
-      && world->getTiledMap()->getType(nodeAux.x, nodeAux.y) == 1)
+      nodeAux.x < world->getGameMap()->getMapSize().x && nodeAux.y < world->getGameMap()->getMapSize().y
+      && world->getGameMap()->getType(nodeAux.x, nodeAux.y) == 1)
     {
       // agregamos el nodo a la lista abaierta si es que no esta
       if (nullptr == getNodeInOpenList(nodeAux) && nullptr == getNodeInClosedList(nodeAux))

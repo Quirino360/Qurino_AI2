@@ -4,6 +4,8 @@
 #include <geDebug.h>
 #include <geColor.h>
 
+
+
 RTSTiledMap::RTSTiledMap() {
   m_mapSize = Vector2I::ZERO;
   m_scrStart = Vector2I::ZERO;
@@ -20,45 +22,6 @@ RTSTiledMap::~RTSTiledMap() {
   destroy();
 }
 
-bool
-RTSTiledMap::init(sf::RenderTarget* pTarget, const Vector2I& mapSize,
-  String  _textureRoute, Vector<String> _texturesNames) 
-{
-
-  if (m_mapGrid.size()) {
-    destroy();
-  }
-  
-  textureNames = _texturesNames;
-  textureRoute = _textureRoute;
-  m_pTarget = pTarget;
-
-  //if is empty set default textures
-  if (textureNames.size() <= 0)
-  {
-    textureNames = { "Water", "Grass", "Marsh", "Obstacle" };
-    //textureNames = {"Untiled", "Start", "Target", "OpenList", "ClosedList" };
-  }
-
-
-  m_mapGrid.resize(mapSize.x * mapSize.y);
-  m_mapSize = mapSize;
-  setCameraStartPosition(0, 0);
-
-  m_mapTextures.resize(textureNames.size());
-  String textureName;
-  for (uint32 i = 0; i < textureNames.size(); ++i) {
-#ifdef MAP_IS_ISOMETRIC
-    textureName = textureRoute + "/iso_terrain_" + textureNames[i] + ".png";
-#else
-    textureName = textureRoute + "/terrain_" + textureNames[i] + ".png";
-#endif
-    m_mapTextures[i].loadFromFile(m_pTarget, textureName);
-  }
-
-  preCalc();
-  return true;
-}
 
 void
 RTSTiledMap::destroy() {
@@ -71,21 +34,15 @@ RTSTiledMap::destroy() {
 }
 
 int8
-RTSTiledMap::getCost(const int32 x, const int32 y) const {
+RTSTiledMap::getType(const int32 x, const int32 y) const {
   GE_ASSERT((x >= 0) && (x < m_mapSize.x) && (y >= 0) && (y < m_mapSize.y));
-  return m_mapGrid[(y*m_mapSize.x) + x].getCost();
+  return m_mapGrid[(y * m_mapSize.x) + x].getType();
 }
 
 void
-RTSTiledMap::setCost(const int32 x, const int32 y, const int8 cost) {
+RTSTiledMap::setType(const int32 x, const int32 y, const uint8 idtype) {
   GE_ASSERT((x >= 0) && (x < m_mapSize.x) && (y >= 0) && (y < m_mapSize.y));
-  m_mapGrid[(y*m_mapSize.x) + x].setCost(cost);
-}
-
-int8
-RTSTiledMap::getType(const int32 x, const int32 y) const {
-  GE_ASSERT((x >= 0) && (x < m_mapSize.x) && (y >= 0) && (y < m_mapSize.y));
-  return m_mapGrid[(y*m_mapSize.x) + x].getType();
+  m_mapGrid[(y * m_mapSize.x) + x].setType(idtype);
 }
 
 void
@@ -101,13 +58,6 @@ RTSTiledMap::setMapType(const uint8 type)
   }/**/
 }
 
-
-void
-RTSTiledMap::setType(const int32 x, const int32 y, const uint8 idtype) {
-  GE_ASSERT((x >= 0) && (x < m_mapSize.x) && (y >= 0) && (y < m_mapSize.y));
-  m_mapGrid[(y*m_mapSize.x) + x].setType(idtype);
-}
-
 void
 RTSTiledMap::moveCamera(const float dx, const float dy) {
   m_fCamera.x += dx;
@@ -117,7 +67,7 @@ RTSTiledMap::moveCamera(const float dx, const float dy) {
   m_fCamera.y = Math::clamp(m_fCamera.y, 0.f, static_cast<float>(m_PreCalc_MaxCameraCoord.y));
 
   setCameraStartPosition(Math::trunc(m_fCamera.x),
-                         Math::trunc(m_fCamera.y));
+    Math::trunc(m_fCamera.y));
 }
 
 void
@@ -129,9 +79,9 @@ RTSTiledMap::setCameraStartPosition(const int32 x, const int32 y) {
 
 #ifdef MAP_IS_ISOMETRIC
   m_PreCalc_ScreenDeface.x = m_scrStart.x + m_PreCalc_MidResolution.x -
-                               (m_iCamera.x - m_iCamera.y);
+    (m_iCamera.x - m_iCamera.y);
   m_PreCalc_ScreenDeface.y = m_scrStart.y + m_PreCalc_MidResolution.y -
-                               ((m_iCamera.x + m_iCamera.y) >> 1);
+    ((m_iCamera.x + m_iCamera.y) >> 1);
 #else
   m_PreCalc_ScreenDeface = m_scrStart + m_PreCalc_MidResolution - m_iCamera;
 #endif
@@ -139,9 +89,9 @@ RTSTiledMap::setCameraStartPosition(const int32 x, const int32 y) {
 
 void
 RTSTiledMap::getScreenToMapCoords(const int32 scrX,
-                                  const int32 scrY,
-                                  int32 &mapX,
-                                  int32 &mapY) {
+  const int32 scrY,
+  int32& mapX,
+  int32& mapY) {
 #ifdef MAP_IS_ISOMETRIC
   float fscrX = ((float)(scrX - m_PreCalc_ScreenDeface.x) / GameOptions::TILEHALFSIZE.x) - 1;
   float fscrY = ((float)(scrY - m_PreCalc_ScreenDeface.y) / GameOptions::TILEHALFSIZE.y);
@@ -159,9 +109,9 @@ RTSTiledMap::getScreenToMapCoords(const int32 scrX,
 
 void
 RTSTiledMap::getMapToScreenCoords(const int32 mapX,
-                                  const int32 mapY,
-                                  int32 &scrX,
-                                  int32 &scrY) {
+  const int32 mapY,
+  int32& scrX,
+  int32& scrY) {
   GE_ASSERT(mapX >= 0 && mapX <= m_mapSize.x && mapY >= 0 && mapY <= m_mapSize.y);
 
 #ifdef MAP_IS_ISOMETRIC
@@ -207,13 +157,13 @@ RTSTiledMap::render() {
 
       getMapToScreenCoords(iterX, iterY, tmpX, tmpY);
       if (tmpX > m_scrEnd.x ||
-          tmpY > m_scrEnd.y ||
-          (tmpX + TILESIZE_X) < m_scrStart.x ||
-          (tmpY + TILESIZE_X) < m_scrStart.y) {
+        tmpY > m_scrEnd.y ||
+        (tmpX + TILESIZE_X) < m_scrStart.x ||
+        (tmpY + TILESIZE_X) < m_scrStart.y) {
         continue;
       }
 
-      tmpTypeTile = m_mapGrid[(iterY*m_mapSize.x) + iterX].getType();
+      tmpTypeTile = m_mapGrid[(iterY * m_mapSize.x) + iterX].getType();
       RTSTexture& refTexture = m_mapTextures[tmpTypeTile];
 
       clipRect.x = (iterX << GameOptions::BITSHFT_TILESIZE.x) % refTexture.getWidth();
@@ -225,10 +175,10 @@ RTSTiledMap::render() {
       refTexture.draw();
     }
   }
-  
+
   if (GameOptions::s_MapShowGrid) {
     FrameVector<sf::Vertex> gridLines;
-    gridLines.reserve( ((tileFinX - tileIniX) + (tileFinY - tileIniY) + 4) << 1);
+    gridLines.reserve(((tileFinX - tileIniX) + (tileFinY - tileIniY) + 4) << 1);
 
     sf::Color gridColor(255, 0, 0, 255);
 
@@ -239,12 +189,12 @@ RTSTiledMap::render() {
 #ifdef MAP_IS_ISOMETRIC
       gridLines.push_back(sf::Vertex(
         sf::Vector2f(static_cast<float>(tmpX + GameOptions::TILEHALFSIZE.x),
-                     static_cast<float>(tmpY)),
+          static_cast<float>(tmpY)),
         gridColor));
-      
+
       gridLines.push_back(sf::Vertex(
         sf::Vector2f(static_cast<float>(tmpX2),
-                     static_cast<float>(tmpY2 + GameOptions::TILEHALFSIZE.y)),
+          static_cast<float>(tmpY2 + GameOptions::TILEHALFSIZE.y)),
         gridColor));
 #else
       gridLines.push_back(sf::Vertex(
@@ -252,8 +202,8 @@ RTSTiledMap::render() {
         gridColor));
 
       gridLines.push_back(sf::Vertex(sf::Vector2f(static_cast<float>(tmpX2),
-                                                  static_cast<float>(tmpY2 + TILESIZE_Y)),
-                                     gridColor));
+        static_cast<float>(tmpY2 + TILESIZE_Y)),
+        gridColor));
 #endif
     }
 
@@ -263,12 +213,12 @@ RTSTiledMap::render() {
 #ifdef MAP_IS_ISOMETRIC
       gridLines.push_back(sf::Vertex(
         sf::Vector2f(static_cast<float>(tmpX + GameOptions::TILEHALFSIZE.x),
-                     static_cast<float>(tmpY)),
+          static_cast<float>(tmpY)),
         gridColor));
 
       gridLines.push_back(sf::Vertex(
         sf::Vector2f(static_cast<float>(tmpX2 + TILESIZE_X),
-                     static_cast<float>(tmpY2 + GameOptions::TILEHALFSIZE.y)),
+          static_cast<float>(tmpY2 + GameOptions::TILEHALFSIZE.y)),
         gridColor));
 #else
       gridLines.push_back(sf::Vertex(
@@ -276,8 +226,8 @@ RTSTiledMap::render() {
         gridColor));
 
       gridLines.push_back(sf::Vertex(sf::Vector2f(static_cast<float>(tmpX2 + TILESIZE_X),
-                                                  static_cast<float>(tmpY2)),
-                                     gridColor));
+        static_cast<float>(tmpY2)),
+        gridColor));
 #endif
     }
 
@@ -307,55 +257,3 @@ RTSTiledMap::MapTile::operator=(const MapTile& rhs) {
   return *this;
 }
 
-bool
-RTSTiledMap::loadFromImageFile(sf::RenderTarget* pTarget, String fileName) {
-  sf::Image image;
-
-  /*
-  if (!image.loadFromFile(fileName.c_str())) {
-    LOGWRN("File not found: " + fileName);
-    return false;
-  }
-  
-  if (!init(pTarget, Vector2I(image.getSize().x, image.getSize().y))) {
-    LOGERR("Failed initializing map data");
-    return false;
-  }
-
-  //With this library, the pixels always are 4 bytes in length
-  int32 lineBytes = image.getSize().x * 4;
-  const uint8* pPixeles = reinterpret_cast<const uint8*>(image.getPixelsPtr());
-
-  for (int32 tmpY = 0; tmpY < m_mapSize.y; ++tmpY) {
-    for (int32 tmpX = 0; tmpX < m_mapSize.x; ++tmpX) {
-      uint8 tipoTerreno = TERRAIN_TYPE::kObstacle;
-      Color actualColor(
-        pPixeles[(tmpY * lineBytes) + (tmpX * 4) + 0],
-        pPixeles[(tmpY * lineBytes) + (tmpX * 4) + 1],
-        pPixeles[(tmpY * lineBytes) + (tmpX * 4) + 2],
-        pPixeles[(tmpY * lineBytes) + (tmpX * 4) + 3]);
-
-      if (Color::Blue == actualColor) {
-        tipoTerreno = TERRAIN_TYPE::kWater;
-      }
-      else if (Color::Green == actualColor) {
-        tipoTerreno = TERRAIN_TYPE::kGrass;
-      }
-      else if (Color::Yellow == actualColor) {
-        tipoTerreno = TERRAIN_TYPE::kMarsh;
-      }
-
-      setType(tmpX, tmpY, tipoTerreno);
-    }
-  }
-  return true;
-
-  /**/
-  
-  return false; //delete this if fixed
-}
-
-bool
-RTSTiledMap::saveToImageFile(sf::RenderTarget*, String) {
-  return false;
-}
