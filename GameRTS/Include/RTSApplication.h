@@ -11,6 +11,8 @@
 #include "Astar.h"
 
 
+//C:\Users\angel\Documents\School\Github\Qurino_AI2\Bin\RTS\assets\game_objects\units
+
 using namespace geEngineSDK;
 
 namespace sf{

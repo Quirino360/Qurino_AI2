@@ -47,7 +47,7 @@ void Astar::addConnections(Node* node)
     // si esta adentro del mapa y su tipo no es obstaculo
     if (coordAux.x >= 0 && coordAux.y >= 0 &&
       coordAux.x < world->getGameMap()->getMapSize().x && coordAux.y < world->getGameMap()->getMapSize().y
-      && world->getGameMap()->getType(coordAux.x, coordAux.y) != 3)
+      && world->getGameMap()->getType(coordAux.x, coordAux.y) == TERRAIN_TYPE::kGrass)
     {
       //
       float distanceAux = 0;

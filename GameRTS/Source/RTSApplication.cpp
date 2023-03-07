@@ -260,9 +260,12 @@ RTSApplication::renderFrame() {
   m_gameWorld.render();
 
   //Render Path Finder
-  pFinder->render();
 
   ImGui::SFML::Render(*m_window);
+
+  pFinder->render(m_window);
+
+
 
   /*
   sf::Text text;

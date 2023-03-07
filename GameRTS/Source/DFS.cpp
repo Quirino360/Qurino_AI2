@@ -27,7 +27,7 @@ void DFS::addConnections(Node* node)
 
     if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
       nodeAux.x < world->getGameMap()->getMapSize().x && nodeAux.y < world->getGameMap()->getMapSize().y
-      && world->getGameMap()->getType(nodeAux.x, nodeAux.y) == 1)
+      && world->getGameMap()->getType(nodeAux.x, nodeAux.y) == TERRAIN_TYPE::kGrass)
     {
       // agregamos el nodo a la lista abaierta si es que no esta
       if (nullptr == getNodeInOpenList(nodeAux) && nullptr == getNodeInClosedList(nodeAux))

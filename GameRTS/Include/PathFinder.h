@@ -2,6 +2,8 @@
 #include <gePrerequisitesUtil.h>
 #include <geVector2I.h>
 
+#include <SFML/Graphics.hpp>
+
 class RTSWorld;
 
 using geEngineSDK::Vector2I;
@@ -139,8 +141,6 @@ public:
 };
 
 
-//textureNames = {"Untiled", "Start", "Target", "OpenList", "ClosedList" };
-
 class PathFinder
 {
 public:
@@ -154,7 +154,7 @@ public:
   update(float deltaTime);
 
   virtual void
-  render();
+  render(sf::RenderWindow* rWindow);
   
   void 
   showPath(Vector2I _target);
@@ -216,8 +216,11 @@ protected:
 
   bool isNodesSeted = false;
 
-
   SEARCHING_STATE::E searchState = SEARCHING_STATE::NOT_SEARCHING;
+
+private:
+  sf::VertexArray lines;
+
 };
 
 

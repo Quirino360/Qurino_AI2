@@ -28,7 +28,7 @@ void BFS::addConnections(Node* node)
 
     if (nodeAux.x >= 0 && nodeAux.y >= 0 &&
       nodeAux.x < world->getGameMap()->getMapSize().x && nodeAux.y < world->getGameMap()->getMapSize().y
-      && world->getGameMap()->getType(nodeAux.x, nodeAux.y) == 1) //cambiar a constantes
+      && world->getGameMap()->getType(nodeAux.x, nodeAux.y) == TERRAIN_TYPE::kGrass) //cambiar a constantes
     {
       // agregamos el nodo a la lista abaierta si es que no esta en ninguna de las 2 listas
       if (nullptr == getNodeInOpenList(nodeAux) && nullptr == getNodeInClosedList(nodeAux))

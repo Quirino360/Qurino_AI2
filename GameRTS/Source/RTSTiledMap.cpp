@@ -176,6 +176,7 @@ RTSTiledMap::render() {
     }
   }
 
+  // mejor manera de dibujar lineas
   if (GameOptions::s_MapShowGrid) {
     FrameVector<sf::Vertex> gridLines;
     gridLines.reserve(((tileFinX - tileIniX) + (tileFinY - tileIniY) + 4) << 1);
