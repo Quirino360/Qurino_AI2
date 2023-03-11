@@ -55,15 +55,15 @@ void PathFinder::render(sf::RenderWindow* rWindow)
   {
     for (uint16 i = 0; i < openNodes.size(); i++)
     {
-      world->getPathTiledMap()->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, 3);
+      world->getPathTiledMap()->setType(openNodes[i]->coord.x, openNodes[i]->coord.y, PATH_FTYPE::E::kOpenList);
     }
 
     for (uint16 i = 0; i < closedNodes.size(); i++)
     {
-      world->getPathTiledMap()->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, 4);
+      world->getPathTiledMap()->setType(closedNodes[i]->coord.x, closedNodes[i]->coord.y, PATH_FTYPE::E::kClosedList);
     }
-    world->getPathTiledMap()->setType(startCoord->x, startCoord->y, 1);
-    world->getPathTiledMap()->setType(targetCoord->x, targetCoord->y, 2);
+    world->getPathTiledMap()->setType(startCoord->x, startCoord->y, PATH_FTYPE::E::kStart);
+    world->getPathTiledMap()->setType(targetCoord->x, targetCoord->y, PATH_FTYPE::E::kTarget);
 
     elapsedFrames = 0;
   }
@@ -76,78 +76,131 @@ void PathFinder::render(sf::RenderWindow* rWindow)
 
 }
 
+bool once = false;
+
 void PathFinder::showPath(Vector2I _target)
 {
+
+ 
   geEngineSDK::Vector <Vector2I> pathCoords;
   Node* trgt = getNodeInClosedList(_target);
   Node* fatherNodeAux = trgt->fatherNode;
 
 
   pathCoords.push_back(*targetCoord);
-  world->getPathTiledMap()->setType(trgt->coord.x, trgt->coord.y, 5);
+  world->getPathTiledMap()->setType(trgt->coord.x, trgt->coord.y, PATH_FTYPE::E::kPath);
 
   while (fatherNodeAux != nullptr)
   {
     pathCoords.push_back(fatherNodeAux->coord);
-    world->getPathTiledMap()->setType(fatherNodeAux->coord.x, fatherNodeAux->coord.y, 5);
+    world->getPathTiledMap()->setType(fatherNodeAux->coord.x, fatherNodeAux->coord.y, PATH_FTYPE::E::kPath);
     fatherNodeAux = fatherNodeAux->fatherNode;
   }
 
-
+  
   // ------------------- Bresenham Algotithm // metorlo en funcion
-  Vector2I currentCoords = { pathCoords[pathCoords.size() - 1]}; //first on the llist (target)
-  Vector2I toCheckCoords = { pathCoords[pathCoords.size() - 2] }; //second on the list 
+  Vector2I currentCoords =  pathCoords[0]; //first on the llist (target)
+  Vector2I toCheckCoords = pathCoords[0 + 1]; //second on the list 
 
-  geEngineSDK::Vector <Vector2I> savedCoords = { currentCoords };
-  geEngineSDK::Vector <Vector2I> newPath;
+  geEngineSDK::Vector <Vector2I> savedCoords; // guarda el ultimo camino que si funciona
+  geEngineSDK::Vector <Vector2I> newPath; // guarda el camino que se esta creando al momento
 
-  Vector2I Pk = currentCoords - toCheckCoords;
-  float M = Pk.y / Pk.x;
-  for (uint32 i = 0; i < pathCoords.size(); i++)
+  Vector2I Pk = {0,0};
+  float M = 0;
+
+  for (uint32 i = 0; i < pathCoords.size() - 1; i++)
   {
     // es necesario cambiar de camino?
-    if (Pk.x == Pk.y) //|| Pk.x == 0 || Pk.y == 0  
+    toCheckCoords = pathCoords[i + 1];
+
+    Pk = currentCoords - toCheckCoords;
+    if (Pk.x == Pk.y || Pk.x == 0 || Pk.y == 0)
     {
       continue;
     }
+    M = static_cast<float>(Pk.y) / static_cast<float>(Pk.x);
 
+    // crea el camino de currentCoords a toCheckCoords
+    newPath.clear();
     Vector2I nextPoint = currentCoords;
-    newPath.push_back(currentCoords);
+    newPath.push_back(nextPoint);
 
-    int nTimesToMove = (Pk.x < 0) ? -Pk.x : Pk.x;
-    int nTimesToAdd = (M < 0) ? -M : M;
-    bool isUp = true;
+    int nTimesToMove = (Pk.y < 0) ? -Pk.y : Pk.y;
+    float nTimesToAdd = (M < 0) ? -M : M;
+    bool isVertical = true;
 
-    if (M > 1) // la linea es mas vertical 
+    float auxX = (Pk.x < 0) ? -Pk.x : Pk.x;
+    float auxY = (Pk.y < 0) ? -Pk.y : Pk.y;
+    if (auxX < auxY) // la linea es mas vertical 
     {
-      nTimesToMove = (Pk.y < 0) ? -Pk.y : Pk.y;
-      isUp = false;
+      nTimesToMove = (Pk.x < 0) ? -Pk.x : Pk.x;
+
+      isVertical = false;
     }
-
-    for (uint32 j = 0; j < nTimesToMove; j++)
+    else
     {
-      for (uint32 k = 0; k < nTimesToAdd; k++)
-      {
-        if (isUp)
-        {
-          nextPoint.x += currentCoords.x + j;
-          nextPoint.y += currentCoords.y + k;
-        }
-        else
-        {
-          nextPoint.x += currentCoords.x + k;
-          nextPoint.y += currentCoords.y + j;
-        }
-        newPath.push_back(nextPoint);
-      }
-      M = (M - static_cast<int>(M)) + Pk.y / Pk.x;
+      M = static_cast<float>(Pk.x) / static_cast<float>(Pk.y);
       nTimesToAdd = (M < 0) ? -M : M;
     }
 
+
+
+    uint32 addedcount = 1;
+    for (uint32 j = 1; j < nTimesToMove + 1; j++)
+    {
+      for (uint32 k = 1; k < static_cast<int>(nTimesToAdd) + 1; k++)
+      {
+        int direction = 1;
+        if (true == isVertical)
+        {
+          direction = (Pk.x > 0) ? -1 : 1;
+          nextPoint.x = currentCoords.y + (addedcount * direction);
+          direction = (Pk.y > 0) ? -1 : 1;
+          nextPoint.y = currentCoords.x + (j * direction);
+          addedcount++;/**/
+
+        }
+        else
+        {
+          direction = (Pk.x > 0) ? -1 : 1;
+          nextPoint.x = currentCoords.x + (j * direction);
+          direction = (Pk.y > 0) ? -1 : 1;
+          nextPoint.y = currentCoords.y + (addedcount * direction);
+          addedcount++;
+        }
+         
+        // mientras crea el camino checa que no sea un obstaculo
+        if (world->getGameMap()->getType(nextPoint.x, nextPoint.y) == TERRAIN_TYPE::kObstacle)  {
+          break;
+        }
+
+        newPath.push_back(nextPoint);
+      }
+
+      // mientras crea el camino checa que no sea un obstaculo
+      if (world->getGameMap()->getType(nextPoint.x, nextPoint.y) == TERRAIN_TYPE::kObstacle)  {
+        break;
+      }
+
+      nTimesToAdd = (M < 0) ? 
+      (nTimesToAdd - static_cast<int>(nTimesToAdd) ) + -M :
+      (nTimesToAdd - static_cast<int>(nTimesToAdd) ) + M;
+    }
+
+    //newPath.push_back(toCheckCoords);
+    savedCoords = newPath;
+  }
+
+  // draw new path
+  for (uint32 i = 0; i < savedCoords.size(); i++)
+  {
+    world->getPathTiledMap()->setType(savedCoords[i].x, savedCoords[i].y, PATH_FTYPE::E::kUntiled);
   }
 
 
-  // --- draw Bresenham Algotithm (SFML)
+
+
+  // --- draw hairpulling Algotithm (SFML)
   lines = sf::VertexArray(sf::LinesStrip, pathCoords.size());
 
   Vector2I topLeft, buttomRight, center;
@@ -164,7 +217,14 @@ void PathFinder::showPath(Vector2I _target)
     lines[i].position = static_cast<sf::Vector2f>(ScreenPos);
 
   }
+  /**/
 
+  once = true;
+}
+
+BRESENHAM_STATE::E PathFinder::bressenham()
+{
+  return BRESENHAM_STATE::E();
 }
 
 /*

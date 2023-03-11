@@ -35,6 +35,16 @@ namespace SEARCHING_STATE
   };
 }
 
+namespace BRESENHAM_STATE
+{
+  enum E
+  {
+    OBSTACLE = 0,
+    NEW_PATH,
+    NO_PATH_NEED
+  };
+}
+
 
 class Node
 {
@@ -158,6 +168,10 @@ public:
   
   void 
   showPath(Vector2I _target);
+
+  BRESENHAM_STATE::E
+  bressenham();
+
 
   void
   setStartCoord(const Vector2I coord);
