@@ -230,16 +230,17 @@ RTSApplication::updateFrame() {
   //mousePosition
   if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
   {
-    int xx, yy = 0;
-    int tileX, tileY = 0;
-    m_gameWorld.getGameMap()->getMapToScreenCoords(0, 0, xx, yy);
-    m_gameWorld.getGameMap()->getScreenToMapCoords(mousePosition.x, mousePosition.y, tileX, tileY);
+    Vector2I tile;
+    Vector2I tilePos;
+    m_gameWorld.getGameMap()->getScreenToMapCoords(mousePosition.x, mousePosition.y, tile.x, tile.y);
+    m_gameWorld.getGameMap()->getMapToScreenCoords(tile.x, tile.y, tilePos.x, tilePos.y);
      
     std::cout << "mousePos -> x = " << mousePosition.x << ", y = " << mousePosition.y << std::endl;
-    std::cout << "TilePos  -> x = " << xx << ", y = " << yy << std::endl;
-    std::cout << "Tile     -> x = " << tileX << ", y = " << tileY << std::endl;
+    std::cout << "Tile     -> x = " << tile.x << ", y = " << tile.y << std::endl;
+    std::cout << "TilePos  -> x = " << tilePos.x << ", y = " << tilePos.y << std::endl;
 
-    m_gameWorld.getGameMap()->setType(tileX, tileY, m_UI.tileTypeID);
+    m_gameWorld.getGameMap()->setType(tile.x, tile.y, m_UI.tileTypeID);
+    unitTest.SetPosition(static_cast<Vector2>(tilePos));
 
   }
 
@@ -248,8 +249,13 @@ RTSApplication::updateFrame() {
   //Update the world
   m_gameWorld.update(deltaTime);
 
+  unitTest.Update(deltaTime);
+
+
   // PathFinder
   pFinder->update(deltaTime);
+
+
 }
 
 void
@@ -258,6 +264,8 @@ RTSApplication::renderFrame() {
 
   // Render World
   m_gameWorld.render();
+  //characterTest.draw();
+  unitTest.Render();
 
   //Render Path Finder
 
@@ -302,7 +310,10 @@ RTSApplication::postInit() {
 
   pFinder = &m_bfs;
 
-  a.loadFromFile("C:/Users/angel/Documents/School/Github/Qurino_AI2/Bin/Textures/Terrain/terrain_Grass.png");
+  grassTexture.loadFromFile("C:/Users/angel/Documents/School/Github/Qurino_AI2/Bin/Textures/Terrain/terrain_Grass.png");
+  characterTest.loadFromFile(m_window, "C:/Users/angel/Downloads/Test.png");
+  unitTest.Init(m_window);
+
 
 }
 
@@ -493,7 +504,7 @@ EditorMenu(RTSApplication* pApp)
     {
       for (int i = 0; i < 4; i++)
       {
-        ImGui::Image(pApp->a, ImVec2(10, 10));
+        ImGui::Image(pApp->grassTexture, ImVec2(10, 10));
         ImGui::SameLine();
         bool is_selected = (UI->currentTileType == UI->tileType[i]);
         if (ImGui::Selectable(UI->tileType[i].c_str(), is_selected,ImGuiSelectableFlags_::ImGuiSelectableFlags_AllowDoubleClick))
@@ -530,7 +541,7 @@ EditorMenu(RTSApplication* pApp)
     }
 
     ImGui::Text("Current shit = ");
-    ImGui::Image(pApp->a, ImVec2(75, 75));
+    ImGui::Image(pApp->grassTexture, ImVec2(75, 75));
   }
   ImGui::End();
 }

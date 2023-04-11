@@ -15,6 +15,9 @@
     <Filter Include="Source Files\PathFinder">
       <UniqueIdentifier>{3a4e5cb2-99f6-4c7b-ab27-e61f802402eb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Units">
+      <UniqueIdentifier>{f9db5845-415f-4840-b0ef-a73a64b3cf1a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\Externals\imgui.cpp">
@@ -76,6 +79,9 @@
     </ClCompile>
     <ClCompile Include="Source\RTSPathMap.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Unit.cpp">
+      <Filter>Source Files\Units</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -144,6 +150,9 @@
     </ClInclude>
     <ClInclude Include="Include\RTSPathMap.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Include\Unit.h">
+      <Filter>Source Files\Units</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

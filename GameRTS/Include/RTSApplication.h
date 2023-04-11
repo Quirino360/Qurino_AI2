@@ -10,7 +10,7 @@
 #include "Dijkstra.h"
 #include "Astar.h"
 
-
+#include "Unit.h"
 //C:\Users\angel\Documents\School\Github\Qurino_AI2\Bin\RTS\assets\game_objects\units
 
 using namespace geEngineSDK;
@@ -108,7 +108,10 @@ public:
   
   UserInterface m_UI;
 
-  sf::Texture a;
+  RTSTexture characterTest;
+  Unit unitTest;
+
+  sf::Texture grassTexture;
 private:
   sf::RenderWindow* m_window;
   sf::Font* m_arialFont;

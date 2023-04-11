@@ -20,7 +20,8 @@ namespace RTSGame {
       Map<String, uint32> animation;
     };
 
-    Path filePath = "RTS/assets/game_objects/units/";
+    //Path filePath = "RTS/assets/game_objects/units/";
+    Path filePath = "C:/Users/angel/Documents/School/Github/Qurino_AI2/Bin/RTS/assets/game_objects/units/";
     Path jsonPath = filePath;
     jsonPath += toString(idUnitType) + ".json";
     DataStreamPtr fData = FileSystem::openFile(jsonPath);

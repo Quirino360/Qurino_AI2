@@ -188,6 +188,7 @@
     <ClCompile Include="Source\RTSGameMap.cpp" />
     <ClCompile Include="Source\RTSUnitType.cpp" />
     <ClCompile Include="Source\RTSWorld.cpp" />
+    <ClCompile Include="Source\Unit.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Include\Astar.h" />
@@ -212,6 +213,7 @@
     <ClInclude Include="Include\RTSGameMap.h" />
     <ClInclude Include="Include\RTSUnitType.h" />
     <ClInclude Include="Include\RTSWorld.h" />
+    <ClInclude Include="Include\Unit.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
